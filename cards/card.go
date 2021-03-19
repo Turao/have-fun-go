@@ -1,19 +1,30 @@
 package cards
 
 import (
+	"encoding/json"
 	"errors"
 
 	"github.com/google/uuid"
 )
 
 type Card interface {
-	Id()
-	OwnerId()
+	Id() uuid.UUID
+	OwnerId() uuid.UUID
 }
 
 type card struct {
-	id      uuid.UUID `json:"id"`
-	ownerId uuid.UUID `json:"ownerId"`
+	id      uuid.UUID
+	ownerId uuid.UUID
+}
+
+func (card card) MarshalJSON() ([]byte, error) {
+	return json.Marshal(struct {
+		Id      uuid.UUID `json:"id"`
+		OwnerId uuid.UUID `json:"ownerId"`
+	}{
+		card.id,
+		card.ownerId,
+	})
 }
 
 func New() card {
