@@ -11,7 +11,7 @@ func TestAddCard(t *testing.T) {
 	cardId := uuid.New()
 	newUser, err := user.AddCard(cardId)
 	if err != nil {
-		t.Errorf("Error while trying to add card to user")
+		t.Errorf(err.Error())
 	}
 
 	found := newUser.cards[cardId]
@@ -38,7 +38,7 @@ func TestRemoveCard(t *testing.T) {
 
 	newUser, err := user.RemoveCard(cardId)
 	if err != nil {
-		t.Errorf("Unable to remove card")
+		t.Errorf(err.Error())
 	}
 
 	if len(newUser.cards) > 0 {

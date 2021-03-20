@@ -11,7 +11,7 @@ func TestAssignOwner(t *testing.T) {
 	ownerId := uuid.New()
 	_, err := card.AssignOwner(ownerId)
 	if err != nil {
-		t.Error()
+		t.Error(err.Error())
 	}
 
 	if card.ownerId != ownerId {
@@ -38,7 +38,7 @@ func TestUnassignOwner(t *testing.T) {
 	card.AssignOwner(ownerId)
 	newCard, err := card.UnassignOwner()
 	if err != nil {
-		t.Error()
+		t.Error(err.Error())
 	}
 
 	if newCard.ownerId != uuid.Nil {
