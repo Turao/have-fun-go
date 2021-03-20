@@ -15,7 +15,7 @@ func TestAssignOwner(t *testing.T) {
 	}
 
 	if card.ownerId != ownerId {
-		t.Error()
+		t.Error("Card OwnerId does not match assigned OwnerId")
 	}
 }
 
@@ -28,7 +28,7 @@ func TestAssignOwnerFail(t *testing.T) {
 		t.Error()
 	}
 	if newCard.ownerId != ownerId {
-		t.Error()
+		t.Error("Card OwnerId does not match assigned OwnerId")
 	}
 }
 
@@ -42,7 +42,7 @@ func TestUnassignOwner(t *testing.T) {
 	}
 
 	if newCard.ownerId != uuid.Nil {
-		t.Error()
+		t.Error("Card still has an Owner Id assigned")
 	}
 }
 
@@ -54,6 +54,6 @@ func TestUnassignOwnerFail(t *testing.T) {
 		t.Error()
 	}
 	if newCard.ownerId != uuid.Nil {
-		t.Error()
+		t.Error("Card still has an Owner Id assigned")
 	}
 }
