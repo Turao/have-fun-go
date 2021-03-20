@@ -10,16 +10,21 @@ import (
 type User interface {
 	Id() uuid.UUID
 	Name() string
-	Cards() []uuid.UUID
+	Cards() map[uuid.UUID]bool
 }
 
 type user struct {
 	id    uuid.UUID
 	name  string
-	cards []uuid.UUID
+	cards map[uuid.UUID]bool
 }
 
 func (user user) MarshalJSON() ([]byte, error) {
+	cards := make([]uuid.UUID, 0, len(user.cards))
+	for card := range user.cards {
+		cards = append(cards, card)
+	}
+
 	return json.Marshal(struct {
 		Id    uuid.UUID   `json:"id"`
 		Name  string      `json:"name"`
@@ -27,13 +32,12 @@ func (user user) MarshalJSON() ([]byte, error) {
 	}{
 		user.id,
 		user.name,
-		user.cards,
+		cards,
 	})
 }
 
 func New(name string) user {
-	user := user{uuid.New(), name, make([]uuid.UUID, 0)}
-
+	user := user{uuid.New(), name, make(map[uuid.UUID]bool, 0)}
 	return user
 }
 
@@ -45,17 +49,26 @@ func (u user) Name() string {
 	return u.name
 }
 
-func (u user) Cards() []uuid.UUID {
+func (u user) Cards() map[uuid.UUID]bool {
 	return u.cards
 }
 
 func (u *user) AddCard(cardId uuid.UUID) (*user, error) {
-	for _, c := range u.cards {
-		if c == cardId {
-			return u, errors.New("User already has this card")
-		}
+	found := u.cards[cardId]
+	if found {
+		return u, errors.New("User already has this card")
 	}
 
-	u.cards = append(u.cards, cardId)
+	u.cards[cardId] = true
+	return u, nil
+}
+
+func (u *user) RemoveCard(cardId uuid.UUID) (*user, error) {
+	found := u.cards[cardId]
+	if !found {
+		return u, errors.New("User does not have this card")
+	}
+
+	delete(u.cards, cardId)
 	return u, nil
 }
