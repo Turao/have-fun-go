@@ -31,11 +31,11 @@ func New() card {
 	return card{uuid.New(), uuid.Nil}
 }
 
-func (c *card) Id() uuid.UUID {
+func (c card) Id() uuid.UUID {
 	return c.id
 }
 
-func (c *card) OwnerId() uuid.UUID {
+func (c card) OwnerId() uuid.UUID {
 	return c.ownerId
 }
 

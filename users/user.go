@@ -37,15 +37,15 @@ func New(name string) user {
 	return user
 }
 
-func (u *user) Id() uuid.UUID {
+func (u user) Id() uuid.UUID {
 	return u.id
 }
 
-func (u *user) Name() string {
+func (u user) Name() string {
 	return u.name
 }
 
-func (u *user) Cards() []uuid.UUID {
+func (u user) Cards() []uuid.UUID {
 	return u.cards
 }
 
