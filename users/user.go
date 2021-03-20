@@ -11,6 +11,8 @@ type User interface {
 	Id() uuid.UUID
 	Name() string
 	Cards() map[uuid.UUID]bool
+	AddCard(cardId uuid.UUID) (*User, error)
+	RemoveCard(cardId uuid.UUID) (*User, error)
 }
 
 type user struct {
@@ -36,9 +38,8 @@ func (user user) MarshalJSON() ([]byte, error) {
 	})
 }
 
-func New(name string) user {
-	user := user{uuid.New(), name, make(map[uuid.UUID]bool, 0)}
-	return user
+func New(name string) *user {
+	return &user{uuid.New(), name, make(map[uuid.UUID]bool, 0)}
 }
 
 func (u user) Id() uuid.UUID {

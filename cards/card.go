@@ -10,6 +10,8 @@ import (
 type Card interface {
 	Id() uuid.UUID
 	OwnerId() uuid.UUID
+	AssignOwner(ownerId uuid.UUID) (*Card, error)
+	UnassignOwner() (*Card, error)
 }
 
 type card struct {
@@ -27,8 +29,8 @@ func (card card) MarshalJSON() ([]byte, error) {
 	})
 }
 
-func New() card {
-	return card{uuid.New(), uuid.Nil}
+func New() *card {
+	return &card{uuid.New(), uuid.Nil}
 }
 
 func (c card) Id() uuid.UUID {
