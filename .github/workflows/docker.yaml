@@ -21,15 +21,9 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-    - name: Run golangci-lint
-      uses: golangci/golangci-lint-action@v2.5.1
-
-#   lint:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v2
-#       - name: Run linter
-#         run: docker build . --target=lint
+      - uses: actions/checkout@v2
+      - name: Run linter
+        run: docker build . --target=lint
   
   test:
     runs-on: ubuntu-latest
