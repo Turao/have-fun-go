@@ -11,6 +11,8 @@ COPY . .
 
 RUN go build -o ./go-cards
 
+RUN go test ./...
+
 FROM alpine:latest as deploy
 
 WORKDIR /go-cards
