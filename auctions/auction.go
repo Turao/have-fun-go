@@ -1,6 +1,7 @@
 package auctions
 
 import (
+	"encoding/json"
 	"errors"
 	"time"
 
@@ -19,6 +20,18 @@ type auction struct {
 	id        uuid.UUID
 	startTime *time.Time
 	endTime   *time.Time
+}
+
+func (auction auction) MarshalJSON() ([]byte, error) {
+	return json.Marshal(struct {
+		Id        uuid.UUID  `json:"id"`
+		StartTime *time.Time `json:"startTime"`
+		EndTime   *time.Time `json:"endTime"`
+	}{
+		auction.id,
+		auction.startTime,
+		auction.endTime,
+	})
 }
 
 func New() *auction {
