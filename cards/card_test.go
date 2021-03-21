@@ -4,56 +4,47 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAssignOwner(t *testing.T) {
 	card := New()
 	ownerId := uuid.New()
-	_, err := card.AssignOwner(ownerId)
-	if err != nil {
-		t.Error(err.Error())
-	}
 
-	if card.ownerId != ownerId {
-		t.Error("Card OwnerId does not match assigned OwnerId")
-	}
+	newCard, err := card.AssignOwner(ownerId)
+
+	assert.Nil(t, err)
+	assert.Equal(t, ownerId, newCard.ownerId)
 }
 
 func TestAssignOwnerFail(t *testing.T) {
 	card := New()
 	ownerId := uuid.New()
 	card.AssignOwner(ownerId)
+
 	newCard, err := card.AssignOwner(ownerId)
-	if err == nil {
-		t.Error()
-	}
-	if newCard.ownerId != ownerId {
-		t.Error("Card OwnerId does not match assigned OwnerId")
-	}
+
+	assert.NotNil(t, err)
+	assert.Equal(t, ownerId, newCard.ownerId)
 }
 
 func TestUnassignOwner(t *testing.T) {
 	card := New()
 	ownerId := uuid.New()
 	card.AssignOwner(ownerId)
-	newCard, err := card.UnassignOwner()
-	if err != nil {
-		t.Error(err.Error())
-	}
 
-	if newCard.ownerId != uuid.Nil {
-		t.Error("Card still has an Owner Id assigned")
-	}
+	newCard, err := card.UnassignOwner()
+
+	assert.Nil(t, err)
+	assert.Equal(t, uuid.Nil, newCard.ownerId)
 }
 
 func TestUnassignOwnerFail(t *testing.T) {
 	card := New()
 	uuid.New()
+
 	newCard, err := card.UnassignOwner()
-	if err == nil {
-		t.Error()
-	}
-	if newCard.ownerId != uuid.Nil {
-		t.Error("Card still has an Owner Id assigned")
-	}
+
+	assert.NotNil(t, err)
+	assert.Equal(t, uuid.Nil, newCard.ownerId)
 }
