@@ -70,7 +70,7 @@ func (auction *auction) End() (*auction, error) {
 	return auction, nil
 }
 
-func (auction *auction) PlaceBid(bidderId uuid.UUID, itemId uuid.UUID, price int) (*auction, error) {
+func (auction *auction) PlaceBid(bidderId uuid.UUID, itemId uuid.UUID, price uint) (*auction, error) {
 	if auction.startTime == nil {
 		return auction, errors.New("Auction has not started yet")
 	}

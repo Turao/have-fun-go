@@ -11,14 +11,14 @@ type Bid interface {
 	Id() uuid.UUID
 	BidderId() uuid.UUID
 	ItemId() uuid.UUID
-	Price() int
+	Price() uint
 }
 
 type bid struct {
 	id       uuid.UUID
 	bidderId uuid.UUID
 	itemId   uuid.UUID
-	price    int
+	price    uint
 	status   status
 }
 
@@ -35,7 +35,7 @@ func (bid *bid) MarshalJSON() ([]byte, error) {
 		Id       uuid.UUID `json:"id"`
 		BidderId uuid.UUID `json:"bidderId"`
 		ItemId   uuid.UUID `json:"itemId"`
-		Price    int       `json:"price"`
+		Price    uint      `json:"price"`
 	}{
 		bid.id,
 		bid.bidderId,
@@ -44,7 +44,7 @@ func (bid *bid) MarshalJSON() ([]byte, error) {
 	})
 }
 
-func newBid(bidderId uuid.UUID, itemId uuid.UUID, price int) *bid {
+func newBid(bidderId uuid.UUID, itemId uuid.UUID, price uint) *bid {
 	return &bid{uuid.New(), bidderId, itemId, price, OPEN}
 }
 
