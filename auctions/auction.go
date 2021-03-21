@@ -29,10 +29,12 @@ func (auction auction) MarshalJSON() ([]byte, error) {
 		Id        uuid.UUID  `json:"id"`
 		StartTime *time.Time `json:"startTime"`
 		EndTime   *time.Time `json:"endTime"`
+		Bids      []bid      `json:"bids"`
 	}{
 		auction.id,
 		auction.startTime,
 		auction.endTime,
+		auction.bids,
 	})
 }
 

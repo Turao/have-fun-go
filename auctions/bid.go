@@ -1,6 +1,7 @@
 package auctions
 
 import (
+	"encoding/json"
 	"errors"
 
 	"github.com/google/uuid"
@@ -28,6 +29,20 @@ const (
 	WON  = "won"
 	LOST = "lost"
 )
+
+func (bid *bid) MarshalJSON() ([]byte, error) {
+	return json.Marshal(struct {
+		Id       uuid.UUID `json:"id"`
+		BidderId uuid.UUID `json:"bidderId"`
+		ItemId   uuid.UUID `json:"itemId"`
+		Price    int       `json:"price"`
+	}{
+		bid.id,
+		bid.bidderId,
+		bid.itemId,
+		bid.price,
+	})
+}
 
 func newBid(bidderId uuid.UUID, itemId uuid.UUID, price int) *bid {
 	return &bid{uuid.New(), bidderId, itemId, price, OPEN}
