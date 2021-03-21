@@ -39,7 +39,7 @@ func (user user) MarshalJSON() ([]byte, error) {
 }
 
 func New(name string) *user {
-	return &user{uuid.New(), name, make(map[uuid.UUID]bool, 0)}
+	return &user{uuid.New(), name, make(map[uuid.UUID]bool)}
 }
 
 func (u user) Id() uuid.UUID {
