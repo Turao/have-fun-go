@@ -77,7 +77,7 @@ func (auction *auction) PlaceBid(id uuid.UUID, bidderId uuid.UUID, itemId uuid.U
 		return auction, errors.New("Auction has already ended")
 	}
 
-	newBid := bid{id, bidderId, itemId, price}
-	auction.bids = append(auction.bids, newBid)
+	newBid := newBid(id, bidderId, itemId, price)
+	auction.bids = append(auction.bids, *newBid)
 	return auction, nil
 }
