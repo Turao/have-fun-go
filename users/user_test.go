@@ -4,20 +4,17 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAddCard(t *testing.T) {
 	user := New("dummy")
 	cardId := uuid.New()
-	newUser, err := user.AddCard(cardId)
-	if err != nil {
-		t.Errorf(err.Error())
-	}
 
-	found := newUser.cards[cardId]
-	if found == false {
-		t.Error("Card was not found after being added. It should have been")
-	}
+	newUser, err := user.AddCard(cardId)
+
+	assert.Nil(t, err)
+	assert.Contains(t, newUser.cards, cardId)
 }
 
 func TestAddCardMoreThanOnce(t *testing.T) {
@@ -26,9 +23,8 @@ func TestAddCardMoreThanOnce(t *testing.T) {
 	user.AddCard(cardId)
 
 	_, err := user.AddCard(cardId)
-	if err == nil {
-		t.Errorf("No errors after trying to add already existing card")
-	}
+
+	assert.NotNil(t, err)
 }
 
 func TestRemoveCard(t *testing.T) {
@@ -37,23 +33,18 @@ func TestRemoveCard(t *testing.T) {
 	user.AddCard(cardId)
 
 	newUser, err := user.RemoveCard(cardId)
-	if err != nil {
-		t.Errorf(err.Error())
-	}
 
-	if len(newUser.cards) > 0 {
-		t.Errorf("User still has cards. Should have none")
-	}
+	assert.Nil(t, err)
+	assert.Empty(t, newUser.cards)
 }
 
 func TestRemoveCardMoreThanOnce(t *testing.T) {
 	user := New("dummy")
 	cardId := uuid.New()
 	user.AddCard(cardId)
-
 	user.RemoveCard(cardId)
+
 	_, err := user.RemoveCard(cardId)
-	if err == nil {
-		t.Errorf("No errors after trying to remove card")
-	}
+
+	assert.NotNil(t, err)
 }
