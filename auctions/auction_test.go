@@ -1,6 +1,10 @@
 package auctions
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/google/uuid"
+)
 
 func TestAuctionStart(t *testing.T) {
 	auction := New()
@@ -66,5 +70,34 @@ func TestAuctionEndMoreThanOnce(t *testing.T) {
 
 	if endedAuction.endTime == nil {
 		t.Error("Auction has no end timestamp. Should have")
+	}
+}
+
+func TestBidPlaced(t *testing.T) {
+	auction := New()
+	auction.Start()
+	_, err := auction.PlaceBid(uuid.New(), uuid.New(), uuid.New(), 10)
+	if err != nil {
+		t.Error(err.Error())
+	}
+}
+
+func TestBidPlacedButAuctionHasNotStarted(t *testing.T) {
+	auction := New()
+	_, err := auction.PlaceBid(uuid.New(), uuid.New(), uuid.New(), 10)
+	if err == nil {
+		t.Error("No errors while placing bid at auction that has not started")
+	}
+
+}
+
+func TestBidPlacedButAuctionHasEnded(t *testing.T) {
+	auction := New()
+	auction.Start()
+	auction.End()
+
+	_, err := auction.PlaceBid(uuid.New(), uuid.New(), uuid.New(), 10)
+	if err == nil {
+		t.Error("No errors while placing bid at auction that has not started")
 	}
 }
