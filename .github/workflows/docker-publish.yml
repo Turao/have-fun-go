@@ -18,14 +18,18 @@ env:
   DOCKER_BUILDKIT: 1
 
 jobs:
-  # Run tests.
-  # See also https://docs.docker.com/docker-hub/builds/automated-testing/
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Run linter
-        run: docker build . --target=lint
+    - name: Run golangci-lint
+      uses: golangci/golangci-lint-action@v2.5.1
+
+#   lint:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: Run linter
+#         run: docker build . --target=lint
   
   test:
     runs-on: ubuntu-latest
