@@ -22,28 +22,18 @@ func main() {
 	user := users.New("joe")
 	PrettyPrintln(user)
 
-	for i := 0; i < 10; i++ {
-		card := cards.New()
-		card.AssignOwner(user.Id())
-		user.AddCard(card.Id())
-		// PrettyPrintln(card)
-		PrettyPrintln(user)
-		fmt.Println("Card added!")
-	}
-
-	for i := 0; i < 10; i++ {
-		card := cards.New()
-		card.AssignOwner(user.Id())
-		user.AddCard(card.Id())
-		// PrettyPrintln(card)
-		PrettyPrintln(user)
-		fmt.Println("Card added!")
-	}
+	card := cards.New()
+	card.AssignOwner(user.Id())
+	user.AddCard(card.Id())
+	PrettyPrintln(user)
 
 	auction := auctions.New()
 	PrettyPrintln(auction)
 	auction.Start()
 	PrettyPrintln(auction)
+
+	auction.PlaceBid(user.Id(), card.Id(), 10)
+
 	auction.End()
 	PrettyPrintln(auction)
 
