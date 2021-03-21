@@ -23,18 +23,37 @@ func main() {
 	PrettyPrintln(user)
 
 	card := cards.New()
-	card.AssignOwner(user.Id())
-	user.AddCard(card.Id())
+	_, err := card.AssignOwner(user.Id())
+	if err != nil {
+		panic(err.Error())
+	}
+
+	_, err = user.AddCard(card.Id())
+	if err != nil {
+		panic(err.Error())
+	}
+
 	PrettyPrintln(user)
 
 	auction := auctions.New()
 	PrettyPrintln(auction)
-	auction.Start()
+
+	_, err = auction.Start()
+	if err != nil {
+		panic(err.Error())
+	}
 	PrettyPrintln(auction)
 
-	auction.PlaceBid(user.Id(), card.Id(), 10)
+	_, err = auction.PlaceBid(user.Id(), card.Id(), 10)
+	if err != nil {
+		panic(err.Error())
+	}
 
-	auction.End()
+	_, err = auction.End()
+	if err != nil {
+		panic(err.Error())
+	}
+
 	PrettyPrintln(auction)
 
 }
