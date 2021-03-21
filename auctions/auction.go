@@ -68,7 +68,7 @@ func (auction *auction) End() (*auction, error) {
 	return auction, nil
 }
 
-func (auction *auction) PlaceBid(id uuid.UUID, bidderId uuid.UUID, itemId uuid.UUID, price int) (*auction, error) {
+func (auction *auction) PlaceBid(bidderId uuid.UUID, itemId uuid.UUID, price int) (*auction, error) {
 	if auction.startTime == nil {
 		return auction, errors.New("Auction has not started yet")
 	}
@@ -77,7 +77,7 @@ func (auction *auction) PlaceBid(id uuid.UUID, bidderId uuid.UUID, itemId uuid.U
 		return auction, errors.New("Auction has already ended")
 	}
 
-	newBid := newBid(id, bidderId, itemId, price)
+	newBid := newBid(bidderId, itemId, price)
 	auction.bids = append(auction.bids, *newBid)
 	return auction, nil
 }

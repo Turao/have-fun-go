@@ -7,7 +7,7 @@ import (
 )
 
 func TestClosePositionAsOpen(t *testing.T) {
-	bid := newBid(uuid.New(), uuid.New(), uuid.New(), 10)
+	bid := newBid(uuid.New(), uuid.New(), 10)
 	_, err := bid.ClosePosition(OPEN)
 	if err == nil {
 		t.Error(err.Error())
@@ -15,7 +15,7 @@ func TestClosePositionAsOpen(t *testing.T) {
 }
 
 func TestClosePositionAsWon(t *testing.T) {
-	bid := newBid(uuid.New(), uuid.New(), uuid.New(), 10)
+	bid := newBid(uuid.New(), uuid.New(), 10)
 	_, err := bid.ClosePosition(WON)
 	if err != nil {
 		t.Error(err.Error())
@@ -27,7 +27,7 @@ func TestClosePositionAsWon(t *testing.T) {
 }
 
 func TestClosePositionAsLost(t *testing.T) {
-	bid := newBid(uuid.New(), uuid.New(), uuid.New(), 10)
+	bid := newBid(uuid.New(), uuid.New(), 10)
 	_, err := bid.ClosePosition(LOST)
 	if err != nil {
 		t.Error(err.Error())
@@ -39,7 +39,7 @@ func TestClosePositionAsLost(t *testing.T) {
 }
 
 func TestClosePositionAsInvalidStatus(t *testing.T) {
-	bid := newBid(uuid.New(), uuid.New(), uuid.New(), 10)
+	bid := newBid(uuid.New(), uuid.New(), 10)
 	_, err := bid.ClosePosition("why-cant-go-provide-enums")
 	if err == nil {
 		t.Error(err.Error())

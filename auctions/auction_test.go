@@ -76,7 +76,7 @@ func TestAuctionEndMoreThanOnce(t *testing.T) {
 func TestBidPlaced(t *testing.T) {
 	auction := New()
 	auction.Start()
-	_, err := auction.PlaceBid(uuid.New(), uuid.New(), uuid.New(), 10)
+	_, err := auction.PlaceBid(uuid.New(), uuid.New(), 10)
 	if err != nil {
 		t.Error(err.Error())
 	}
@@ -84,7 +84,7 @@ func TestBidPlaced(t *testing.T) {
 
 func TestBidPlacedButAuctionHasNotStarted(t *testing.T) {
 	auction := New()
-	_, err := auction.PlaceBid(uuid.New(), uuid.New(), uuid.New(), 10)
+	_, err := auction.PlaceBid(uuid.New(), uuid.New(), 10)
 	if err == nil {
 		t.Error("No errors while placing bid at auction that has not started")
 	}
@@ -96,7 +96,7 @@ func TestBidPlacedButAuctionHasEnded(t *testing.T) {
 	auction.Start()
 	auction.End()
 
-	_, err := auction.PlaceBid(uuid.New(), uuid.New(), uuid.New(), 10)
+	_, err := auction.PlaceBid(uuid.New(), uuid.New(), 10)
 	if err == nil {
 		t.Error("No errors while placing bid at auction that has not started")
 	}

@@ -29,8 +29,8 @@ const (
 	LOST = "lost"
 )
 
-func newBid(id uuid.UUID, bidderId uuid.UUID, itemId uuid.UUID, price int) *bid {
-	return &bid{id, bidderId, itemId, price, OPEN}
+func newBid(bidderId uuid.UUID, itemId uuid.UUID, price int) *bid {
+	return &bid{uuid.New(), bidderId, itemId, price, OPEN}
 }
 
 // WHAT THE HELL IS THIS THING?!
