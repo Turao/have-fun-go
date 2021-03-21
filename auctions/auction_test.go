@@ -4,31 +4,26 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAuctionStart(t *testing.T) {
 	auction := New()
-	startedAuction, err := auction.Start()
-	if err != nil {
-		t.Error(err.Error())
-	}
 
-	if startedAuction.startTime == nil {
-		t.Error("Auction has no start timestamp. Should have")
-	}
+	startedAuction, err := auction.Start()
+
+	assert.Nil(t, err)
+	assert.NotNil(t, startedAuction.startTime)
 }
 
 func TestAuctionStartMoreThanOnce(t *testing.T) {
 	auction := New()
 	auction.Start()
-	startedAuction, err := auction.Start()
-	if err == nil {
-		t.Error("No error when starting an auction more than once.")
-	}
 
-	if startedAuction.startTime == nil {
-		t.Error("Auction has no start timestamp. Should have")
-	}
+	startedAuction, err := auction.Start()
+
+	assert.NotNil(t, err)
+	assert.NotNil(t, startedAuction.startTime)
 }
 
 func TestAuctionEnd(t *testing.T) {
@@ -36,26 +31,18 @@ func TestAuctionEnd(t *testing.T) {
 	auction.Start()
 
 	endedAuction, err := auction.End()
-	if err != nil {
-		t.Error(err.Error())
-	}
 
-	if endedAuction.endTime == nil {
-		t.Error("Auction has no end timestamp. Should have")
-	}
+	assert.Nil(t, err)
+	assert.NotNil(t, endedAuction.endTime)
 }
 
 func TestAuctionEndButNotStartedYet(t *testing.T) {
 	auction := New()
 
 	endedAuction, err := auction.End()
-	if err == nil {
-		t.Error("No error when ending an auction more than once.")
-	}
 
-	if endedAuction.endTime != nil {
-		t.Error("Auction has no end timestamp. Should have")
-	}
+	assert.NotNil(t, err)
+	assert.Nil(t, endedAuction.endTime)
 }
 
 func TestAuctionEndMoreThanOnce(t *testing.T) {
@@ -64,30 +51,26 @@ func TestAuctionEndMoreThanOnce(t *testing.T) {
 	auction.End()
 
 	endedAuction, err := auction.End()
-	if err == nil {
-		t.Error("No error when ending an auction more than once.")
-	}
 
-	if endedAuction.endTime == nil {
-		t.Error("Auction has no end timestamp. Should have")
-	}
+	assert.NotNil(t, err)
+	assert.NotNil(t, endedAuction.endTime)
 }
 
 func TestBidPlaced(t *testing.T) {
 	auction := New()
 	auction.Start()
+
 	_, err := auction.PlaceBid(uuid.New(), uuid.New(), 10)
-	if err != nil {
-		t.Error(err.Error())
-	}
+
+	assert.Nil(t, err)
 }
 
 func TestBidPlacedButAuctionHasNotStarted(t *testing.T) {
 	auction := New()
+
 	_, err := auction.PlaceBid(uuid.New(), uuid.New(), 10)
-	if err == nil {
-		t.Error("No errors while placing bid at auction that has not started")
-	}
+
+	assert.NotNil(t, err)
 
 }
 
@@ -97,7 +80,6 @@ func TestBidPlacedButAuctionHasEnded(t *testing.T) {
 	auction.End()
 
 	_, err := auction.PlaceBid(uuid.New(), uuid.New(), 10)
-	if err == nil {
-		t.Error("No errors while placing bid at auction that has not started")
-	}
+
+	assert.NotNil(t, err)
 }
