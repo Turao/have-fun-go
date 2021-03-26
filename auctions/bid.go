@@ -53,7 +53,7 @@ func newBid(bidderId uuid.UUID, itemId uuid.UUID, price uint) *bid {
 func (bid *bid) ClosePosition(status status) (*bid, error) {
 	switch status {
 	case OPEN:
-		return bid, errors.New("Bids must not be closed with status OPEN")
+		return bid, errors.New("bids must not be closed with status OPEN")
 
 	case WON:
 		bid.status = WON
@@ -64,6 +64,6 @@ func (bid *bid) ClosePosition(status status) (*bid, error) {
 		return bid, nil
 
 	default:
-		return bid, errors.New("Unable to close bid position. Invalid Status received")
+		return bid, errors.New("unable to close bid position. Invalid Status received")
 	}
 }

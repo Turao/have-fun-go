@@ -43,7 +43,7 @@ func (c card) OwnerId() uuid.UUID {
 
 func (c *card) AssignOwner(ownerId uuid.UUID) (*card, error) {
 	if c.ownerId != uuid.Nil {
-		return c, errors.New("Card already has an owner")
+		return c, errors.New("card already has an owner")
 	}
 
 	c.ownerId = ownerId
@@ -52,7 +52,7 @@ func (c *card) AssignOwner(ownerId uuid.UUID) (*card, error) {
 
 func (c *card) UnassignOwner() (*card, error) {
 	if c.ownerId == uuid.Nil {
-		return c, errors.New("Card has no owner")
+		return c, errors.New("card has no owner")
 	}
 
 	c.ownerId = uuid.Nil

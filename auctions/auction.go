@@ -48,7 +48,7 @@ func (auction auction) Id() uuid.UUID {
 
 func (auction *auction) Start() (*auction, error) {
 	if auction.startTime != nil {
-		return auction, errors.New("Auction has already started")
+		return auction, errors.New("auction has already started")
 	}
 
 	now := time.Now()
@@ -58,11 +58,11 @@ func (auction *auction) Start() (*auction, error) {
 
 func (auction *auction) End() (*auction, error) {
 	if auction.startTime == nil {
-		return auction, errors.New("Auction has not started yet")
+		return auction, errors.New("auction has not started yet")
 	}
 
 	if auction.endTime != nil {
-		return auction, errors.New("Auction has already ended")
+		return auction, errors.New("auction has already ended")
 	}
 
 	now := time.Now()
@@ -72,11 +72,11 @@ func (auction *auction) End() (*auction, error) {
 
 func (auction *auction) PlaceBid(bidderId uuid.UUID, itemId uuid.UUID, price uint) (*auction, error) {
 	if auction.startTime == nil {
-		return auction, errors.New("Auction has not started yet")
+		return auction, errors.New("auction has not started yet")
 	}
 
 	if auction.endTime != nil {
-		return auction, errors.New("Auction has already ended")
+		return auction, errors.New("auction has already ended")
 	}
 
 	newBid := newBid(bidderId, itemId, price)

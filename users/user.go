@@ -57,7 +57,7 @@ func (u user) Cards() map[uuid.UUID]bool {
 func (u *user) AddCard(cardId uuid.UUID) (*user, error) {
 	found := u.cards[cardId]
 	if found {
-		return u, errors.New("User already has this card")
+		return u, errors.New("user already has this card")
 	}
 
 	u.cards[cardId] = true
@@ -67,7 +67,7 @@ func (u *user) AddCard(cardId uuid.UUID) (*user, error) {
 func (u *user) RemoveCard(cardId uuid.UUID) (*user, error) {
 	found := u.cards[cardId]
 	if !found {
-		return u, errors.New("User does not have this card")
+		return u, errors.New("user does not have this card")
 	}
 
 	delete(u.cards, cardId)
