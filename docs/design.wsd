@@ -1,0 +1,26 @@
+@startuml design
+
+package matches {
+  class match
+}
+
+package auctions {
+  class auction
+  class bid
+
+  auction --> bid
+}
+
+package cards {
+  class card
+}
+
+package users {
+  class user
+}
+
+user --> auction : places bids
+user --> card : owns
+user --> match : competes at
+
+@enduml
