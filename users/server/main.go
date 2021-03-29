@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"errors"
-	"fmt"
 	"log"
 	"net"
 
@@ -21,7 +20,7 @@ type server struct {
 }
 
 func (s *server) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.User, error) {
-	fmt.Println("Getting user...")
+	log.Println("[server] Getting user...")
 
 	uuid, err := uuid.Parse(req.GetUserId())
 	if err != nil {
@@ -41,6 +40,8 @@ func (s *server) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.User,
 // }
 
 func (s *server) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.User, error) {
+	log.Println("[server] Creating user...")
+
 	user, err := s.createUser.Execute(req.GetName())
 	if err != nil {
 		return nil, errors.New("unable to create new user")

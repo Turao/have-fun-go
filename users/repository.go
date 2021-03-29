@@ -2,6 +2,7 @@ package users
 
 import (
 	"errors"
+	"log"
 
 	"github.com/google/uuid"
 )
@@ -20,6 +21,8 @@ func NewInMemoryRepository() *InMemoryRepository {
 }
 
 func (r *InMemoryRepository) GetUser(userId uuid.UUID) (*user, error) {
+	log.Println("[in-memory repository] Getting User")
+
 	user, found := r.inMemoryDatabase[userId]
 	if !found {
 		return nil, errors.New("user does not exist")
@@ -28,6 +31,8 @@ func (r *InMemoryRepository) GetUser(userId uuid.UUID) (*user, error) {
 }
 
 func (r *InMemoryRepository) CreateUser(user *user) (*user, error) {
+	log.Println("[in-memory repository] Creating user")
+
 	_, found := r.inMemoryDatabase[user.id]
 	if found {
 		return nil, errors.New("User has already been stored")
