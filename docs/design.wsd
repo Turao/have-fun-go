@@ -4,7 +4,7 @@ package matches {
   class match
 }
 
-package auctions {
+package auction {
   class auction
   class bid
 

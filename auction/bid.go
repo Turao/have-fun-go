@@ -1,4 +1,4 @@
-package auctions
+package auction
 
 import (
 	"encoding/json"

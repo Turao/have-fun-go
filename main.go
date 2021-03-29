@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/turao/go-cards/auctions"
+	"github.com/turao/go-cards/auction"
 	"github.com/turao/go-cards/card"
 	"github.com/turao/go-cards/user"
 	"google.golang.org/grpc"
@@ -40,7 +40,7 @@ func main() {
 
 	PrettyPrintln(user)
 
-	auction := auctions.New()
+	auction := auction.New()
 	PrettyPrintln(auction)
 
 	_, err = auction.Start()
