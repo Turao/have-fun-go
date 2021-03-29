@@ -16,7 +16,7 @@ import (
 type server struct {
 	pb.UnimplementedUsersServer
 
-	repository *users.Repository
+	repository users.Repository
 }
 
 func (s *server) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.User, error) {
@@ -39,6 +39,7 @@ func (s *server) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.User,
 // }
 
 func (s *server) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.User, error) {
+	fmt.Println("Creating User...")
 	user := users.New(req.GetName())
 
 	user, err := s.repository.CreateUser(user)
@@ -58,7 +59,7 @@ func main() {
 	}
 	s := grpc.NewServer()
 
-	pb.RegisterUsersServer(s, &server{repository: users.NewRepository()})
+	pb.RegisterUsersServer(s, &server{repository: users.NewInMemoryRepository()})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalln("Failed to serve")
 	}
