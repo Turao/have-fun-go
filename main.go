@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/turao/go-cards/auctions"
-	"github.com/turao/go-cards/cards"
+	"github.com/turao/go-cards/card"
 	"github.com/turao/go-cards/user"
 	"google.golang.org/grpc"
 
@@ -27,7 +27,7 @@ func main() {
 	user := user.New("joe")
 	PrettyPrintln(user)
 
-	card := cards.New()
+	card := card.New()
 	_, err := card.AssignOwner(user.Id())
 	if err != nil {
 		panic(err.Error())
