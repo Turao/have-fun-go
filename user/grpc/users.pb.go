@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.26.0
 // 	protoc        v3.15.6
-// source: users/grpc/users.proto
+// source: users/grpc/user.proto
 
 package grpc
 
@@ -254,12 +254,12 @@ var file_users_grpc_users_proto_goTypes = []interface{}{
 	(*CreateUserRequest)(nil), // 3: CreateUserRequest
 }
 var file_users_grpc_users_proto_depIdxs = []int32{
-	1, // 0: Users.GetUser:input_type -> GetUserRequest
-	2, // 1: Users.ListUsers:input_type -> ListUsersRequest
-	3, // 2: Users.CreateUser:input_type -> CreateUserRequest
-	0, // 3: Users.GetUser:output_type -> User
-	0, // 4: Users.ListUsers:output_type -> User
-	0, // 5: Users.CreateUser:output_type -> User
+	1, // 0: user.GetUser:input_type -> GetUserRequest
+	2, // 1: user.ListUsers:input_type -> ListUsersRequest
+	3, // 2: user.CreateUser:input_type -> CreateUserRequest
+	0, // 3: user.GetUser:output_type -> User
+	0, // 4: user.ListUsers:output_type -> User
+	0, // 5: user.CreateUser:output_type -> User
 	3, // [3:6] is the sub-list for method output_type
 	0, // [0:3] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name

@@ -7,16 +7,16 @@ import (
 	"net"
 
 	"github.com/google/uuid"
-	"github.com/turao/go-cards/users"
-	pb "github.com/turao/go-cards/users/grpc"
+	"github.com/turao/go-cards/user"
+	pb "github.com/turao/go-cards/user/grpc"
 	"google.golang.org/grpc"
 )
 
 type server struct {
 	pb.UnimplementedUsersServer
 
-	createUser users.CreateUserUseCase
-	getUser    users.GetUserUseCase
+	createUser user.CreateUserUseCase
+	getUser    user.GetUserUseCase
 }
 
 func (s *server) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.User, error) {
@@ -58,11 +58,11 @@ func main() {
 	}
 	s := grpc.NewServer()
 
-	repository := users.NewInMemoryRepository()
+	repository := user.NewInMemoryRepository()
 
 	pb.RegisterUsersServer(s, &server{
-		createUser: users.CreateUserUseCase{Repository: repository},
-		getUser:    users.GetUserUseCase{Repository: repository},
+		createUser: user.CreateUserUseCase{Repository: repository},
+		getUser:    user.GetUserUseCase{Repository: repository},
 	})
 
 	if err := s.Serve(lis); err != nil {

@@ -15,7 +15,7 @@ package cards {
   class card
 }
 
-package users {
+package user {
   class user
 }
 

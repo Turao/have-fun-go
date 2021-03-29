@@ -8,10 +8,10 @@ import (
 
 	"github.com/turao/go-cards/auctions"
 	"github.com/turao/go-cards/cards"
-	"github.com/turao/go-cards/users"
+	"github.com/turao/go-cards/user"
 	"google.golang.org/grpc"
 
-	pb "github.com/turao/go-cards/users/grpc"
+	pb "github.com/turao/go-cards/user/grpc"
 )
 
 func PrettyPrintln(data json.Marshaler) {
@@ -24,7 +24,7 @@ func PrettyPrintln(data json.Marshaler) {
 
 func main() {
 
-	user := users.New("joe")
+	user := user.New("joe")
 	PrettyPrintln(user)
 
 	card := cards.New()
