@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option go_package = "github.com/turao/go-cards/grpc";
+
+service Users {
+  rpc GetUser(GetUserRequest) returns (User) {}
+  rpc ListUsers(ListUsersRequest) returns (stream User) {}
+  
+  rpc CreateUser(CreateUserRequest) returns (User) {}
+}
+
+message User {
+  string id = 1;
+  string name = 2;
+}
+
+message GetUserRequest {
+  string userId = 1;
+}
+
+message ListUsersRequest {}
+
+message CreateUserRequest {
+  string name = 1;
+}
+

@@ -1,12 +1,18 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
+	"log"
+	"time"
 
 	"github.com/turao/go-cards/auctions"
 	"github.com/turao/go-cards/cards"
 	"github.com/turao/go-cards/users"
+	"google.golang.org/grpc"
+
+	pb "github.com/turao/go-cards/users/grpc"
 )
 
 func PrettyPrintln(data json.Marshaler) {
@@ -55,5 +61,29 @@ func main() {
 	}
 
 	PrettyPrintln(auction)
+
+	conn, err := grpc.Dial("127.0.0.1:8080", grpc.WithInsecure(), grpc.WithBlock())
+	if err != nil {
+		log.Fatalln("Unable to connect (grpc): ", err.Error())
+	}
+	defer conn.Close()
+
+	client := pb.NewUsersClient(conn)
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+
+	u, err := client.CreateUser(ctx, &pb.CreateUserRequest{})
+	if err != nil {
+		fmt.Println("Unable to create user: ", err.Error())
+	}
+	fmt.Println("Created User...")
+	fmt.Println(u)
+
+	u, err = client.GetUser(ctx, &pb.GetUserRequest{UserId: u.Id})
+	if err != nil {
+		fmt.Println("Unable to get user: ", err.Error())
+	}
+	fmt.Println("Got User...", u)
 
 }
