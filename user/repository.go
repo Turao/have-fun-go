@@ -9,6 +9,7 @@ import (
 
 type Repository interface {
 	GetUser(uuid.UUID) (*user, error)
+	GetUsers() ([]user, error)
 	CreateUser(user *user) (*user, error)
 }
 
@@ -20,8 +21,8 @@ func NewInMemoryRepository() *InMemoryRepository {
 	return &InMemoryRepository{make(map[uuid.UUID]*user)}
 }
 
-func (r *InMemoryRepository) GetUser(userId uuid.UUID) (*user, error) {
-	log.Println("[in-memory repository] Getting User")
+func (r InMemoryRepository) GetUser(userId uuid.UUID) (*user, error) {
+	log.Println("[in-memory repository] Getting User...")
 
 	user, found := r.inMemoryDatabase[userId]
 	if !found {
@@ -30,8 +31,20 @@ func (r *InMemoryRepository) GetUser(userId uuid.UUID) (*user, error) {
 	return user, nil
 }
 
+func (r InMemoryRepository) GetUsers() ([]user, error) {
+	log.Println("[in-memory repository] Getting Users...")
+
+	users := make([]user, len(r.inMemoryDatabase))
+
+	for _, u := range r.inMemoryDatabase {
+		users = append(users, *u)
+	}
+
+	return users, nil
+}
+
 func (r *InMemoryRepository) CreateUser(user *user) (*user, error) {
-	log.Println("[in-memory repository] Creating user")
+	log.Println("[in-memory repository] Creating user...")
 
 	_, found := r.inMemoryDatabase[user.id]
 	if found {

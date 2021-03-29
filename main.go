@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"io"
 	"log"
 	"time"
 
@@ -84,5 +85,24 @@ func main() {
 		log.Println("[main]", "Unable to get user: ", err.Error())
 	}
 	log.Println("[main]", "Got User...", u)
+
+	users, err := client.ListUsers(ctx, &pb.ListUsersRequest{})
+	if err != nil {
+		log.Println("[main]", "Unable to list users: ", err.Error())
+	}
+
+	log.Println("[main]", "Listing all users now...")
+	for {
+		u, err := users.Recv()
+		if err == io.EOF {
+			return
+		}
+
+		if err != nil {
+			return
+		}
+
+		log.Println("[main]", "Got User...", u)
+	}
 
 }

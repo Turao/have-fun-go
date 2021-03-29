@@ -15,8 +15,9 @@ import (
 type server struct {
 	pb.UnimplementedUsersServer
 
-	createUser user.CreateUserUseCase
 	getUser    user.GetUserUseCase
+	listUsers  user.ListUsersUseCase
+	createUser user.CreateUserUseCase
 }
 
 func (s *server) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.User, error) {
@@ -35,9 +36,21 @@ func (s *server) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.User,
 	return &pb.User{Id: found.Id().String(), Name: found.Name()}, nil
 }
 
-// func (s *server) ListUsers(*pb.ListUsersRequest, Users_ListUsersServer) error {
-// 	return status.Errorf(codes.Unimplemented, "method ListUsers not implemented")
-// }
+func (s *server) ListUsers(req *pb.ListUsersRequest, stream pb.Users_ListUsersServer) error {
+	users, err := s.listUsers.Execute()
+	if err != nil {
+		return err // todo: avoid naked errors!
+	}
+
+	for _, user := range users {
+		err = stream.Send(&pb.User{Id: user.Id().String(), Name: user.Name()})
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
 
 func (s *server) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.User, error) {
 	log.Println("[server] Creating user...")
@@ -61,8 +74,9 @@ func main() {
 	repository := user.NewInMemoryRepository()
 
 	pb.RegisterUsersServer(s, &server{
-		createUser: user.CreateUserUseCase{Repository: repository},
 		getUser:    user.GetUserUseCase{Repository: repository},
+		listUsers:  user.ListUsersUseCase{Repository: repository},
+		createUser: user.CreateUserUseCase{Repository: repository},
 	})
 
 	if err := s.Serve(lis); err != nil {
