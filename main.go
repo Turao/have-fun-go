@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 	"time"
 
@@ -20,7 +19,7 @@ func PrettyPrintln(data json.Marshaler) {
 	if err != nil {
 		return
 	}
-	fmt.Println(string(d))
+	log.Println("[main]", string(d))
 }
 
 func main() {
@@ -75,15 +74,15 @@ func main() {
 
 	u, err := client.CreateUser(ctx, &pb.CreateUserRequest{})
 	if err != nil {
-		fmt.Println("Unable to create user: ", err.Error())
+		log.Println("[main]", "Unable to create user: ", err.Error())
 	}
-	fmt.Println("Created User...")
-	fmt.Println(u)
+	log.Println("[main]", "Created User...")
+	log.Println("[main]", u)
 
 	u, err = client.GetUser(ctx, &pb.GetUserRequest{UserId: u.Id})
 	if err != nil {
-		fmt.Println("Unable to get user: ", err.Error())
+		log.Println("[main]", "Unable to get user: ", err.Error())
 	}
-	fmt.Println("Got User...", u)
+	log.Println("[main]", "Got User...", u)
 
 }
