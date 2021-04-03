@@ -7,6 +7,8 @@ service Users {
   rpc ListUsers(ListUsersRequest) returns (stream User) {}
   
   rpc CreateUser(CreateUserRequest) returns (User) {}
+  rpc AddCard(AddCardRequest) returns (User) {}
+  rpc RemoveCard(RemoveCardRequest) returns (User) {}
 }
 
 message User {
@@ -24,3 +26,12 @@ message CreateUserRequest {
   string name = 1;
 }
 
+message AddCardRequest {
+  string userId = 1;
+  string cardId = 2;
+}
+
+message RemoveCardRequest {
+  string userId = 1;
+  string cardId = 2;
+}

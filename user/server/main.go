@@ -18,10 +18,11 @@ type server struct {
 	getUser    user.GetUserUseCase
 	listUsers  user.ListUsersUseCase
 	createUser user.CreateUserUseCase
+	addCard    user.AddCardUseCase
 }
 
 func (s *server) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.User, error) {
-	log.Println("[server] Getting user...")
+	log.Println("[server]", "Getting user...")
 
 	uuid, err := uuid.Parse(req.GetUserId())
 	if err != nil {
@@ -53,12 +54,32 @@ func (s *server) ListUsers(req *pb.ListUsersRequest, stream pb.Users_ListUsersSe
 }
 
 func (s *server) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.User, error) {
-	log.Println("[server] Creating user...")
+	log.Println("[server]", "Creating user...")
 
 	user, err := s.createUser.Execute(req.GetName())
 	if err != nil {
 		return nil, errors.New("unable to create new user")
 	}
+	return &pb.User{Id: user.Id().String(), Name: user.Name()}, nil
+}
+
+func (s *server) AddCard(ctx context.Context, req *pb.AddCardRequest) (*pb.User, error) {
+	log.Println("[server]", "Adding card...")
+	userId, err := uuid.Parse(req.UserId)
+	if err != nil {
+		return nil, errors.New("unable to parse userId")
+	}
+
+	cardId, err := uuid.Parse(req.CardId)
+	if err != nil {
+		return nil, errors.New("unable to parse cardId")
+	}
+
+	user, err := s.addCard.Execute(userId, cardId)
+	if err != nil {
+		return nil, errors.New("failed to add card to user")
+	}
+
 	return &pb.User{Id: user.Id().String(), Name: user.Name()}, nil
 }
 
@@ -77,6 +98,7 @@ func main() {
 		getUser:    user.GetUserUseCase{Repository: repository},
 		listUsers:  user.ListUsersUseCase{Repository: repository},
 		createUser: user.CreateUserUseCase{Repository: repository},
+		addCard:    user.AddCardUseCase{Repository: repository},
 	})
 
 	if err := s.Serve(lis); err != nil {

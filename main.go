@@ -7,9 +7,6 @@ import (
 	"log"
 	"time"
 
-	"github.com/turao/go-cards/auction"
-	"github.com/turao/go-cards/card"
-	"github.com/turao/go-cards/user"
 	"google.golang.org/grpc"
 
 	pb "github.com/turao/go-cards/user/grpc"
@@ -24,44 +21,6 @@ func PrettyPrintln(data json.Marshaler) {
 }
 
 func main() {
-
-	user := user.New("joe")
-	PrettyPrintln(user)
-
-	card := card.New()
-	_, err := card.AssignOwner(user.Id())
-	if err != nil {
-		panic(err.Error())
-	}
-
-	_, err = user.AddCard(card.Id())
-	if err != nil {
-		panic(err.Error())
-	}
-
-	PrettyPrintln(user)
-
-	auction := auction.New()
-	PrettyPrintln(auction)
-
-	_, err = auction.Start()
-	if err != nil {
-		panic(err.Error())
-	}
-	PrettyPrintln(auction)
-
-	_, err = auction.PlaceBid(user.Id(), card.Id(), 10)
-	if err != nil {
-		panic(err.Error())
-	}
-
-	_, err = auction.End()
-	if err != nil {
-		panic(err.Error())
-	}
-
-	PrettyPrintln(auction)
-
 	conn, err := grpc.Dial("127.0.0.1:8080", grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
 		log.Fatalln("Unable to connect (grpc): ", err.Error())
@@ -95,14 +54,24 @@ func main() {
 	for {
 		u, err := users.Recv()
 		if err == io.EOF {
-			return
+			break
 		}
 
 		if err != nil {
 			return
 		}
-
 		log.Println("[main]", "Got User...", u)
+	}
+
+	cardId := "00000000-0000-0000-0000-000000000000"
+	_, err = client.AddCard(ctx, &pb.AddCardRequest{UserId: u.Id, CardId: cardId})
+	if err != nil {
+		log.Println("[main]", "unable to add card to user (first time)", err.Error())
+	}
+
+	_, err = client.AddCard(ctx, &pb.AddCardRequest{UserId: u.Id, CardId: cardId})
+	if err != nil {
+		log.Println("[main]", "unable to add card to user (second time)", err.Error())
 	}
 
 }

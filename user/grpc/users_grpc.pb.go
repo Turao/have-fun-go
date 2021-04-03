@@ -21,6 +21,8 @@ type UsersClient interface {
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*User, error)
 	ListUsers(ctx context.Context, in *ListUsersRequest, opts ...grpc.CallOption) (Users_ListUsersClient, error)
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*User, error)
+	AddCard(ctx context.Context, in *AddCardRequest, opts ...grpc.CallOption) (*User, error)
+	RemoveCard(ctx context.Context, in *RemoveCardRequest, opts ...grpc.CallOption) (*User, error)
 }
 
 type usersClient struct {
@@ -81,6 +83,24 @@ func (c *usersClient) CreateUser(ctx context.Context, in *CreateUserRequest, opt
 	return out, nil
 }
 
+func (c *usersClient) AddCard(ctx context.Context, in *AddCardRequest, opts ...grpc.CallOption) (*User, error) {
+	out := new(User)
+	err := c.cc.Invoke(ctx, "/Users/AddCard", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usersClient) RemoveCard(ctx context.Context, in *RemoveCardRequest, opts ...grpc.CallOption) (*User, error) {
+	out := new(User)
+	err := c.cc.Invoke(ctx, "/Users/RemoveCard", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UsersServer is the server API for Users service.
 // All implementations must embed UnimplementedUsersServer
 // for forward compatibility
@@ -88,6 +108,8 @@ type UsersServer interface {
 	GetUser(context.Context, *GetUserRequest) (*User, error)
 	ListUsers(*ListUsersRequest, Users_ListUsersServer) error
 	CreateUser(context.Context, *CreateUserRequest) (*User, error)
+	AddCard(context.Context, *AddCardRequest) (*User, error)
+	RemoveCard(context.Context, *RemoveCardRequest) (*User, error)
 	mustEmbedUnimplementedUsersServer()
 }
 
@@ -103,6 +125,12 @@ func (UnimplementedUsersServer) ListUsers(*ListUsersRequest, Users_ListUsersServ
 }
 func (UnimplementedUsersServer) CreateUser(context.Context, *CreateUserRequest) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
+}
+func (UnimplementedUsersServer) AddCard(context.Context, *AddCardRequest) (*User, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddCard not implemented")
+}
+func (UnimplementedUsersServer) RemoveCard(context.Context, *RemoveCardRequest) (*User, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveCard not implemented")
 }
 func (UnimplementedUsersServer) mustEmbedUnimplementedUsersServer() {}
 
@@ -174,6 +202,42 @@ func _Users_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Users_AddCard_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddCardRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServer).AddCard(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Users/AddCard",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServer).AddCard(ctx, req.(*AddCardRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Users_RemoveCard_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveCardRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServer).RemoveCard(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Users/RemoveCard",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServer).RemoveCard(ctx, req.(*RemoveCardRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Users_ServiceDesc is the grpc.ServiceDesc for Users service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -189,6 +253,14 @@ var Users_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "CreateUser",
 			Handler:    _Users_CreateUser_Handler,
 		},
+		{
+			MethodName: "AddCard",
+			Handler:    _Users_AddCard_Handler,
+		},
+		{
+			MethodName: "RemoveCard",
+			Handler:    _Users_RemoveCard_Handler,
+		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
@@ -197,5 +269,5 @@ var Users_ServiceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 	},
-	Metadata: "users/grpc/user.proto",
+	Metadata: "user/grpc/users.proto",
 }
