@@ -59,8 +59,8 @@ func TestGetUsers(t *testing.T) {
 	log.Println(users)
 	assert.Nil(t, err)
 
-	assert.Contains(t, users, *user0)
-	assert.Contains(t, users, *user1)
+	assert.Contains(t, users, user0)
+	assert.Contains(t, users, user1)
 }
 
 func TestUpdateUser(t *testing.T) {

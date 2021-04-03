@@ -10,7 +10,7 @@ import (
 
 type Repository interface {
 	GetUser(uuid.UUID) (*user, error)
-	GetUsers() ([]user, error)
+	GetUsers() ([]*user, error)
 	CreateUser(user *user) (*user, error)
 	UpdateUser(user *user) (*user, error)
 }
@@ -36,15 +36,15 @@ func (r *InMemoryRepository) GetUser(userId uuid.UUID) (*user, error) {
 	return user, nil
 }
 
-func (r *InMemoryRepository) GetUsers() ([]user, error) {
+func (r *InMemoryRepository) GetUsers() ([]*user, error) {
 	log.Println("[in-memory repository]", "Getting Users...")
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
-	users := make([]user, len(r.users))
+	users := make([]*user, 0, len(r.users))
 
 	for _, u := range r.users {
-		users = append(users, *u)
+		users = append(users, u)
 	}
 
 	return users, nil
