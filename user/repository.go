@@ -3,6 +3,7 @@ package user
 import (
 	"errors"
 	"log"
+	"sync"
 
 	"github.com/google/uuid"
 )
@@ -15,29 +16,34 @@ type Repository interface {
 }
 
 type InMemoryRepository struct {
-	inMemoryDatabase map[uuid.UUID]*user
+	mutex sync.Mutex
+	users map[uuid.UUID]*user
 }
 
 func NewInMemoryRepository() *InMemoryRepository {
-	return &InMemoryRepository{make(map[uuid.UUID]*user)}
+	return &InMemoryRepository{mutex: sync.Mutex{}, users: make(map[uuid.UUID]*user)}
 }
 
-func (r InMemoryRepository) GetUser(userId uuid.UUID) (*user, error) {
+func (r *InMemoryRepository) GetUser(userId uuid.UUID) (*user, error) {
 	log.Println("[in-memory repository]", "Getting User...")
+	r.mutex.Lock()
+	defer r.mutex.Unlock()
 
-	user, found := r.inMemoryDatabase[userId]
+	user, found := r.users[userId]
 	if !found {
 		return nil, errors.New("user does not exist")
 	}
 	return user, nil
 }
 
-func (r InMemoryRepository) GetUsers() ([]user, error) {
+func (r *InMemoryRepository) GetUsers() ([]user, error) {
 	log.Println("[in-memory repository]", "Getting Users...")
+	r.mutex.Lock()
+	defer r.mutex.Unlock()
 
-	users := make([]user, len(r.inMemoryDatabase))
+	users := make([]user, len(r.users))
 
-	for _, u := range r.inMemoryDatabase {
+	for _, u := range r.users {
 		users = append(users, *u)
 	}
 
@@ -46,22 +52,26 @@ func (r InMemoryRepository) GetUsers() ([]user, error) {
 
 func (r *InMemoryRepository) CreateUser(user *user) (*user, error) {
 	log.Println("[in-memory repository]", "Creating user...")
+	r.mutex.Lock()
+	defer r.mutex.Unlock()
 
-	_, found := r.inMemoryDatabase[user.id]
+	_, found := r.users[user.id]
 	if found {
 		return nil, errors.New("user has already been stored")
 	}
-	r.inMemoryDatabase[user.id] = user
+	r.users[user.id] = user
 	return user, nil
 }
 
 func (r *InMemoryRepository) UpdateUser(user *user) (*user, error) {
 	log.Println("[in-memory repository]", "Updating user...")
+	r.mutex.Lock()
+	defer r.mutex.Unlock()
 
-	_, found := r.inMemoryDatabase[user.id]
+	_, found := r.users[user.id]
 	if !found {
 		return nil, errors.New("user does not exist")
 	}
-	r.inMemoryDatabase[user.id] = user
+	r.users[user.id] = user
 	return user, nil
 }
