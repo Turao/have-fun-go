@@ -11,6 +11,7 @@ type Repository interface {
 	GetUser(uuid.UUID) (*user, error)
 	GetUsers() ([]user, error)
 	CreateUser(user *user) (*user, error)
+	UpdateUser(user *user) (*user, error)
 }
 
 type InMemoryRepository struct {
@@ -48,7 +49,18 @@ func (r *InMemoryRepository) CreateUser(user *user) (*user, error) {
 
 	_, found := r.inMemoryDatabase[user.id]
 	if found {
-		return nil, errors.New("User has already been stored")
+		return nil, errors.New("user has already been stored")
+	}
+	r.inMemoryDatabase[user.id] = user
+	return user, nil
+}
+
+func (r *InMemoryRepository) UpdateUser(user *user) (*user, error) {
+	log.Println("[in-memory repository]", "Updating user...")
+
+	_, found := r.inMemoryDatabase[user.id]
+	if !found {
+		return nil, errors.New("user does not exist")
 	}
 	r.inMemoryDatabase[user.id] = user
 	return user, nil
