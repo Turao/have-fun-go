@@ -10,7 +10,7 @@ type ListUsersUseCase struct {
 	Repository Repository
 }
 
-func (uc *ListUsersUseCase) Execute() ([]*user, error) {
+func (uc *ListUsersUseCase) Execute() ([]user, error) {
 	log.Println("[listUser]", "Listing User...")
 
 	users, err := uc.Repository.GetUsers()
