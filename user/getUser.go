@@ -14,7 +14,7 @@ type GetUserUseCase struct {
 	Repository Repository
 }
 
-func (uc *GetUserUseCase) Execute(userId uuid.UUID) (*user, error) {
+func (uc GetUserUseCase) Execute(userId uuid.UUID) (*user, error) {
 	log.Println("[getUser]", "Getting User...")
 
 	found, err := uc.Repository.GetUser(userId)

@@ -15,10 +15,10 @@ import (
 type server struct {
 	pb.UnimplementedUsersServer
 
-	getUser    user.GetUserUseCase
-	listUsers  user.ListUsersUseCase
-	createUser user.CreateUserUseCase
-	addCard    user.AddCardUseCase
+	getUser    user.GetUser
+	listUsers  user.ListUsers
+	createUser user.CreateUser
+	addCard    user.AddCard
 }
 
 func (s *server) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.User, error) {

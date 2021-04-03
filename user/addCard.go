@@ -14,7 +14,7 @@ type AddCardUseCase struct {
 	Repository Repository
 }
 
-func (uc *AddCardUseCase) Execute(userId uuid.UUID, cardId uuid.UUID) (*user, error) {
+func (uc AddCardUseCase) Execute(userId uuid.UUID, cardId uuid.UUID) (*user, error) {
 	log.Println("[addCard]", "Adding card to user...", cardId, userId)
 
 	user, err := uc.Repository.GetUser(userId)

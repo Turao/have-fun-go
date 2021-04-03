@@ -10,7 +10,7 @@ type CreateUserUseCase struct {
 	Repository Repository
 }
 
-func (uc *CreateUserUseCase) Execute(name string) (*user, error) {
+func (uc CreateUserUseCase) Execute(name string) (*user, error) {
 	log.Println("[createUser]", "Creating User...")
 	user := New(name)
 
