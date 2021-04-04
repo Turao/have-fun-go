@@ -11,8 +11,8 @@ type User interface {
 	Id() uuid.UUID
 	Name() string
 	Cards() map[uuid.UUID]bool
-	AddCard(cardId uuid.UUID) (*User, error)
-	RemoveCard(cardId uuid.UUID) (*User, error)
+	AddCard(cardId uuid.UUID) (User, error)
+	RemoveCard(cardId uuid.UUID) (User, error)
 }
 
 type user struct {

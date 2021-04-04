@@ -12,8 +12,8 @@ type Auction interface {
 	Id()
 	StartTime() time.Time
 	EndTime() time.Time
-	Start() (*Auction, error)
-	End() (*Auction, error)
+	Start() (Auction, error)
+	End() (Auction, error)
 	Bids() []Bid
 }
 

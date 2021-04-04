@@ -10,8 +10,8 @@ import (
 type Card interface {
 	Id() uuid.UUID
 	OwnerId() uuid.UUID
-	AssignOwner(ownerId uuid.UUID) (*Card, error)
-	UnassignOwner() (*Card, error)
+	AssignOwner(ownerId uuid.UUID) (Card, error)
+	UnassignOwner() (Card, error)
 }
 
 type card struct {
