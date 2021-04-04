@@ -69,12 +69,12 @@ func TestUpdateCard(t *testing.T) {
 
 	card, _ := repo.CreateCard(New())
 	newOwnerId := uuid.New()
-	card.ownerId = newOwnerId
+	// card.ownerId = newOwnerId
 	updated, err := repo.UpdateCard(card)
 
 	assert.Nil(t, err)
 	assert.NotNil(t, updated)
-	assert.Equal(t, newOwnerId, updated.ownerId)
+	assert.Equal(t, newOwnerId, updated.OwnerId())
 }
 
 func TestUpdateCardDoesNotExist(t *testing.T) {

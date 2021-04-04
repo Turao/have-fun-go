@@ -7,9 +7,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func givenCardExists(t *testing.T, repository Repository) *card {
-	card := New()
-	card, err := repository.CreateCard(card)
+func givenCardExists(t *testing.T, repository Repository) Card {
+	card, err := repository.CreateCard(New())
 	if err != nil {
 		t.Fatal("failed on helper function")
 	}

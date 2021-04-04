@@ -9,22 +9,22 @@ import (
 )
 
 type Repository interface {
-	GetCard(uuid.UUID) (*card, error)
-	GetCards() ([]*card, error)
-	CreateCard(card *card) (*card, error)
-	UpdateCard(card *card) (*card, error)
+	GetCard(uuid.UUID) (Card, error)
+	GetCards() ([]Card, error)
+	CreateCard(card Card) (Card, error)
+	UpdateCard(card Card) (Card, error)
 }
 
 type InMemoryRepository struct {
 	mutex sync.Mutex
-	cards map[uuid.UUID]*card
+	cards map[uuid.UUID]Card
 }
 
 func NewInMemoryRepository() *InMemoryRepository {
-	return &InMemoryRepository{mutex: sync.Mutex{}, cards: make(map[uuid.UUID]*card)}
+	return &InMemoryRepository{mutex: sync.Mutex{}, cards: make(map[uuid.UUID]Card)}
 }
 
-func (r *InMemoryRepository) GetCard(cardId uuid.UUID) (*card, error) {
+func (r *InMemoryRepository) GetCard(cardId uuid.UUID) (Card, error) {
 	log.Println("[in-memory repository]", "Getting Card...")
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
@@ -36,12 +36,12 @@ func (r *InMemoryRepository) GetCard(cardId uuid.UUID) (*card, error) {
 	return card, nil
 }
 
-func (r *InMemoryRepository) GetCards() ([]*card, error) {
+func (r *InMemoryRepository) GetCards() ([]Card, error) {
 	log.Println("[in-memory repository]", "Getting Cards...")
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
-	cards := make([]*card, 0, len(r.cards))
+	cards := make([]Card, 0, len(r.cards))
 
 	for _, u := range r.cards {
 		cards = append(cards, u)
@@ -50,28 +50,28 @@ func (r *InMemoryRepository) GetCards() ([]*card, error) {
 	return cards, nil
 }
 
-func (r *InMemoryRepository) CreateCard(card *card) (*card, error) {
+func (r *InMemoryRepository) CreateCard(card Card) (Card, error) {
 	log.Println("[in-memory repository]", "Creating card...")
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
-	_, found := r.cards[card.id]
+	_, found := r.cards[card.Id()]
 	if found {
 		return nil, errors.New("card has already been stored")
 	}
-	r.cards[card.id] = card
+	r.cards[card.Id()] = card
 	return card, nil
 }
 
-func (r *InMemoryRepository) UpdateCard(card *card) (*card, error) {
+func (r *InMemoryRepository) UpdateCard(card Card) (Card, error) {
 	log.Println("[in-memory repository]", "Updating card...")
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
-	_, found := r.cards[card.id]
+	_, found := r.cards[card.Id()]
 	if !found {
 		return nil, errors.New("card does not exist")
 	}
-	r.cards[card.id] = card
+	r.cards[card.Id()] = card
 	return card, nil
 }

@@ -10,8 +10,8 @@ import (
 type Card interface {
 	Id() uuid.UUID
 	OwnerId() uuid.UUID
-	AssignOwner(ownerId uuid.UUID) (Card, error)
-	UnassignOwner() (Card, error)
+	AssignOwner(ownerId uuid.UUID) error
+	UnassignOwner() error
 }
 
 type card struct {
@@ -41,20 +41,20 @@ func (c card) OwnerId() uuid.UUID {
 	return c.ownerId
 }
 
-func (c *card) AssignOwner(ownerId uuid.UUID) (*card, error) {
+func (c *card) AssignOwner(ownerId uuid.UUID) error {
 	if c.ownerId != uuid.Nil {
-		return c, errors.New("card already has an owner")
+		return errors.New("card already has an owner")
 	}
 
 	c.ownerId = ownerId
-	return c, nil
+	return nil
 }
 
-func (c *card) UnassignOwner() (*card, error) {
+func (c *card) UnassignOwner() error {
 	if c.ownerId == uuid.Nil {
-		return c, errors.New("card has no owner")
+		return errors.New("card has no owner")
 	}
 
 	c.ownerId = uuid.Nil
-	return c, nil
+	return nil
 }

@@ -7,21 +7,21 @@ import (
 )
 
 type AssignOwner interface {
-	Execute(name string) (*card, error)
+	Execute(name string) (Card, error)
 }
 
 type AssignOwnerUseCase struct {
 	Repository Repository
 }
 
-func (uc AssignOwnerUseCase) Execute(cardId uuid.UUID, ownerId uuid.UUID) (*card, error) {
+func (uc AssignOwnerUseCase) Execute(cardId uuid.UUID, ownerId uuid.UUID) (Card, error) {
 	log.Println("[AssignOwner]", "Assigning Owner to card...")
 	card, err := uc.Repository.GetCard(cardId)
 	if err != nil {
 		return nil, err // todo: do not return naked errors!
 	}
 
-	card, err = card.AssignOwner(ownerId)
+	err = card.AssignOwner(ownerId)
 	if err != nil {
 		return nil, err // todo: do not return naked errors!
 	}

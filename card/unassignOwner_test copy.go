@@ -11,8 +11,7 @@ func TestUnassignOwnerUseCase(t *testing.T) {
 
 	unassignOwner := UnassignOwnerUseCase{Repository: repository}
 
-	card := New()
-	card, err := unassignOwner.Execute(card.Id())
+	card, err := unassignOwner.Execute(New().Id())
 	assert.Nil(t, err)
 	assert.NotNil(t, card)
 }

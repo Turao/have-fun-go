@@ -3,15 +3,15 @@ package card
 import "log"
 
 type CreateCard interface {
-	Execute() (*card, error)
+	Execute() (Card, error)
 }
 
 type CreateCardUseCase struct {
 	Repository Repository
 }
 
-func (uc CreateCardUseCase) Execute() (*card, error) {
-	log.Println("[createCard]", "Creating Card...")
+func (uc CreateCardUseCase) Execute() (Card, error) {
+	log.Println("[CreateCard]", "Creating Card...")
 	card := New()
 
 	created, err := uc.Repository.CreateCard(card)

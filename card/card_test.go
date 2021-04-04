@@ -11,10 +11,10 @@ func TestAssignOwner(t *testing.T) {
 	card := New()
 	ownerId := uuid.New()
 
-	newCard, err := card.AssignOwner(ownerId)
+	err := card.AssignOwner(ownerId)
 
 	assert.Nil(t, err)
-	assert.Equal(t, ownerId, newCard.ownerId)
+	assert.Equal(t, ownerId, card.OwnerId())
 }
 
 func TestAssignOwnerFail(t *testing.T) {
@@ -22,10 +22,10 @@ func TestAssignOwnerFail(t *testing.T) {
 	ownerId := uuid.New()
 	card.AssignOwner(ownerId)
 
-	newCard, err := card.AssignOwner(ownerId)
+	err := card.AssignOwner(ownerId)
 
 	assert.NotNil(t, err)
-	assert.Equal(t, ownerId, newCard.ownerId)
+	assert.Equal(t, ownerId, card.OwnerId())
 }
 
 func TestUnassignOwner(t *testing.T) {
@@ -33,18 +33,18 @@ func TestUnassignOwner(t *testing.T) {
 	ownerId := uuid.New()
 	card.AssignOwner(ownerId)
 
-	newCard, err := card.UnassignOwner()
+	err := card.UnassignOwner()
 
 	assert.Nil(t, err)
-	assert.Equal(t, uuid.Nil, newCard.ownerId)
+	assert.Equal(t, uuid.Nil, card.OwnerId())
 }
 
 func TestUnassignOwnerFail(t *testing.T) {
 	card := New()
 	uuid.New()
 
-	newCard, err := card.UnassignOwner()
+	err := card.UnassignOwner()
 
 	assert.NotNil(t, err)
-	assert.Equal(t, uuid.Nil, newCard.ownerId)
+	assert.Equal(t, uuid.Nil, card.OwnerId())
 }
