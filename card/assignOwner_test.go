@@ -7,21 +7,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func givenCardExists(t *testing.T, repository Repository) Card {
-	card, err := repository.CreateCard(New())
-	if err != nil {
-		t.Fatal("failed on helper function")
-	}
-	return card
-}
-
 func TestAssignOwnerUseCase(t *testing.T) {
 	repository := NewInMemoryRepository()
 	card := givenCardExists(t, repository)
 
 	assignOwner := AssignOwnerUseCase{Repository: repository}
 
-	card, err := assignOwner.Execute(uuid.New(), card.Id())
+	ownerId := uuid.New()
+	card, err := assignOwner.Execute(card.Id(), ownerId)
+
 	assert.Nil(t, err)
 	assert.NotNil(t, card)
+	assert.True(t, card.HasOwner())
 }

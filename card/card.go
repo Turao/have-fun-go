@@ -9,6 +9,7 @@ import (
 
 type Card interface {
 	Id() uuid.UUID
+	HasOwner() bool
 	OwnerId() uuid.UUID
 	AssignOwner(ownerId uuid.UUID) error
 	UnassignOwner() error
@@ -41,8 +42,12 @@ func (c card) OwnerId() uuid.UUID {
 	return c.ownerId
 }
 
+func (c card) HasOwner() bool {
+	return c.ownerId != uuid.Nil
+}
+
 func (c *card) AssignOwner(ownerId uuid.UUID) error {
-	if c.ownerId != uuid.Nil {
+	if c.HasOwner() {
 		return errors.New("card already has an owner")
 	}
 
@@ -51,7 +56,7 @@ func (c *card) AssignOwner(ownerId uuid.UUID) error {
 }
 
 func (c *card) UnassignOwner() error {
-	if c.ownerId == uuid.Nil {
+	if !c.HasOwner() {
 		return errors.New("card has no owner")
 	}
 

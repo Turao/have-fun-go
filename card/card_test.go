@@ -7,17 +7,18 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestAssignOwner(t *testing.T) {
+func TestAssignOwner_forCardWithoutOwner(t *testing.T) {
 	card := New()
 	ownerId := uuid.New()
 
 	err := card.AssignOwner(ownerId)
 
 	assert.Nil(t, err)
+	assert.True(t, card.HasOwner())
 	assert.Equal(t, ownerId, card.OwnerId())
 }
 
-func TestAssignOwnerFail(t *testing.T) {
+func TestAssignOwner_forCardWithOwner(t *testing.T) {
 	card := New()
 	ownerId := uuid.New()
 	card.AssignOwner(ownerId)
@@ -28,7 +29,7 @@ func TestAssignOwnerFail(t *testing.T) {
 	assert.Equal(t, ownerId, card.OwnerId())
 }
 
-func TestUnassignOwner(t *testing.T) {
+func TestUnassignOwner_forCardWithOwner(t *testing.T) {
 	card := New()
 	ownerId := uuid.New()
 	card.AssignOwner(ownerId)
@@ -36,15 +37,15 @@ func TestUnassignOwner(t *testing.T) {
 	err := card.UnassignOwner()
 
 	assert.Nil(t, err)
-	assert.Equal(t, uuid.Nil, card.OwnerId())
+	assert.False(t, card.HasOwner())
 }
 
-func TestUnassignOwnerFail(t *testing.T) {
+func TestUnassignOwner_forCardWithoutOwner(t *testing.T) {
 	card := New()
 	uuid.New()
 
 	err := card.UnassignOwner()
 
 	assert.NotNil(t, err)
-	assert.Equal(t, uuid.Nil, card.OwnerId())
+	assert.False(t, card.HasOwner())
 }

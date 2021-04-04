@@ -4,7 +4,6 @@ import (
 	"log"
 	"testing"
 
-	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -65,23 +64,21 @@ func TestGetCards(t *testing.T) {
 }
 
 func TestUpdateCard(t *testing.T) {
-	repo := NewInMemoryRepository()
+	repository := NewInMemoryRepository()
+	card := givenCardExists(t, repository)
 
-	card, _ := repo.CreateCard(New())
-	newOwnerId := uuid.New()
-	// card.ownerId = newOwnerId
-	updated, err := repo.UpdateCard(card)
+	updated, err := repository.UpdateCard(card)
 
 	assert.Nil(t, err)
 	assert.NotNil(t, updated)
-	assert.Equal(t, newOwnerId, updated.OwnerId())
+	// todo: can this be tested without handling the concrete implementation directly?
 }
 
 func TestUpdateCardDoesNotExist(t *testing.T) {
-	repo := NewInMemoryRepository()
+	repository := NewInMemoryRepository()
 	card := New()
 
-	updated, err := repo.UpdateCard(card)
+	updated, err := repository.UpdateCard(card)
 
 	assert.NotNil(t, err)
 	assert.Nil(t, updated)
