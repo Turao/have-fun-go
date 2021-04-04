@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/turao/go-cards/grpc";
+option go_package = "github.com/turao/go-cards/user/grpc";
 
 service Users {
   rpc GetUser(GetUserRequest) returns (User) {}
