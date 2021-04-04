@@ -11,7 +11,7 @@ type CreateCardUseCase struct {
 }
 
 func (uc CreateCardUseCase) Execute() (Card, error) {
-	log.Println("[CreateCard]", "Creating Card...")
+	log.Println("[create card use-case]", "creating card...")
 	card := New()
 
 	created, err := uc.Repository.CreateCard(card)

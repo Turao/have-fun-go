@@ -15,7 +15,7 @@ type UnassignOwnerUseCase struct {
 }
 
 func (uc UnassignOwnerUseCase) Execute(cardId uuid.UUID) (Card, error) {
-	log.Println("[UnassignOwner]", "Unassigning Owner from card...")
+	log.Println("[unassign owner use-case]", "unassigning owner from card...")
 	card, err := uc.Repository.GetCard(cardId)
 	if err != nil {
 		return nil, err // todo: do not return naked errors!

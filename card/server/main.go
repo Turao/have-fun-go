@@ -21,7 +21,7 @@ type server struct {
 }
 
 func (s *server) CreateCard(ctx context.Context, req *pb.CreateCardRequest) (*pb.Card, error) {
-	log.Println("[server]", "Creating card...")
+	log.Println("[server]", "creating card...")
 
 	card, err := s.createCard.Execute()
 	if err != nil {
@@ -31,7 +31,7 @@ func (s *server) CreateCard(ctx context.Context, req *pb.CreateCardRequest) (*pb
 }
 
 func (s *server) AssignOwner(ctx context.Context, req *pb.AssignOwnerRequest) (*pb.Card, error) {
-	log.Println("[server]", "Assigning owner to card...")
+	log.Println("[server]", "assigning owner to card...")
 	cardId, err := uuid.Parse(req.CardId)
 	if err != nil {
 		return nil, errors.New("unable to parse cardId")
@@ -55,7 +55,7 @@ const port = ":8081"
 func main() {
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
-		log.Fatalln("Failed to listen")
+		log.Fatalln("failed to listen")
 	}
 	s := grpc.NewServer()
 
@@ -68,6 +68,6 @@ func main() {
 	})
 
 	if err := s.Serve(lis); err != nil {
-		log.Fatalln("Failed to serve")
+		log.Fatalln("failed to serve")
 	}
 }

@@ -25,7 +25,7 @@ func NewInMemoryRepository() *InMemoryRepository {
 }
 
 func (r *InMemoryRepository) GetCard(cardId uuid.UUID) (Card, error) {
-	log.Println("[in-memory repository]", "Getting Card...")
+	log.Println("[in-memory repository]", "getting card...")
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
@@ -37,7 +37,7 @@ func (r *InMemoryRepository) GetCard(cardId uuid.UUID) (Card, error) {
 }
 
 func (r *InMemoryRepository) GetCards() ([]Card, error) {
-	log.Println("[in-memory repository]", "Getting Cards...")
+	log.Println("[in-memory repository]", "getting cards...")
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
@@ -51,7 +51,7 @@ func (r *InMemoryRepository) GetCards() ([]Card, error) {
 }
 
 func (r *InMemoryRepository) CreateCard(card Card) (Card, error) {
-	log.Println("[in-memory repository]", "Creating card...")
+	log.Println("[in-memory repository]", "creating card...")
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
@@ -64,7 +64,7 @@ func (r *InMemoryRepository) CreateCard(card Card) (Card, error) {
 }
 
 func (r *InMemoryRepository) UpdateCard(card Card) (Card, error) {
-	log.Println("[in-memory repository]", "Updating card...")
+	log.Println("[in-memory repository]", "updating card...")
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
