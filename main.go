@@ -40,7 +40,7 @@ func main() {
 	log.Println("[main]", "Created User...")
 	log.Println("[main]", user)
 
-	user, err = userClient.GetUser(ctx, &userGRPC.GetUserRequest{UserId: user.Id})
+	user, err = userClient.GetUser(ctx, &userGRPC.GetUserRequest{UserId: user.GetId()})
 	if err != nil {
 		log.Println("[main]", "Unable to get user: ", err.Error())
 	}
@@ -78,18 +78,18 @@ func main() {
 	}
 
 	// Add this card to the user
-	_, err = userClient.AddCard(ctx, &userGRPC.AddCardRequest{UserId: user.Id, CardId: card.Id})
+	_, err = userClient.AddCard(ctx, &userGRPC.AddCardRequest{UserId: user.GetId(), CardId: card.GetId()})
 	if err != nil {
 		log.Println("[main]", "unable to add card to user (first time)", err.Error())
 	}
 
-	_, err = userClient.AddCard(ctx, &userGRPC.AddCardRequest{UserId: user.Id, CardId: card.Id})
+	_, err = userClient.AddCard(ctx, &userGRPC.AddCardRequest{UserId: user.GetId(), CardId: card.GetId()})
 	if err != nil {
 		log.Println("[main]", "unable to add card to user (second time)", err.Error())
 	}
 
 	// assign user as owner of this card
-	card, err = cardClient.AssignOwner(ctx, &cardGRPC.AssignOwnerRequest{CardId: card.Id, OwnerId: user.Id})
+	card, err = cardClient.AssignOwner(ctx, &cardGRPC.AssignOwnerRequest{CardId: card.GetId(), OwnerId: user.GetId()})
 	if err != nil {
 		log.Println("[main]", "unable to assign owner to card", err.Error())
 	}
