@@ -14,7 +14,7 @@ type AssignOwnerUseCase struct {
 	Repository Repository
 }
 
-func (uc AssignOwnerUseCase) Execute(ownerId uuid.UUID, cardId uuid.UUID) (*card, error) {
+func (uc AssignOwnerUseCase) Execute(cardId uuid.UUID, ownerId uuid.UUID) (*card, error) {
 	log.Println("[AssignOwner]", "Assigning Owner to card...")
 	card, err := uc.Repository.GetCard(cardId)
 	if err != nil {

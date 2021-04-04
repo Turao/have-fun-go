@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option go_package = "github.com/turao/go-cards/card/grpc";
+
+service Cards {
+  rpc CreateCard(CreateCardRequest) returns (Card);
+  rpc AssignOwner(AssignOwnerRequest) returns (Card);
+  rpc UnassignOwner(UnassignOwnerRequest) returns (Card);
+}
+
+message Card {
+  string id = 1;
+  string ownerId = 2;
+}
+
+message CreateCardRequest {}
+
+message AssignOwnerRequest {
+  string cardId = 1;
+  string ownerId = 2;
+}
+
+message UnassignOwnerRequest {
+  string cardId = 1;
+}
