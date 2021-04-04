@@ -9,30 +9,30 @@ import (
 
 func TestAssignOwner_forCardWithoutOwner(t *testing.T) {
 	card := New()
-	ownerId := uuid.New()
+	ownerID := uuid.New()
 
-	err := card.AssignOwner(ownerId)
+	err := card.AssignOwner(ownerID)
 
 	assert.Nil(t, err)
 	assert.True(t, card.HasOwner())
-	assert.Equal(t, ownerId, card.OwnerId())
+	assert.Equal(t, ownerID, card.OwnerID())
 }
 
 func TestAssignOwner_forCardWithOwner(t *testing.T) {
 	card := New()
-	ownerId := uuid.New()
-	card.AssignOwner(ownerId)
+	ownerID := uuid.New()
+	card.AssignOwner(ownerID)
 
-	err := card.AssignOwner(ownerId)
+	err := card.AssignOwner(ownerID)
 
 	assert.NotNil(t, err)
-	assert.Equal(t, ownerId, card.OwnerId())
+	assert.Equal(t, ownerID, card.OwnerID())
 }
 
 func TestUnassignOwner_forCardWithOwner(t *testing.T) {
 	card := New()
-	ownerId := uuid.New()
-	card.AssignOwner(ownerId)
+	ownerID := uuid.New()
+	card.AssignOwner(ownerID)
 
 	err := card.UnassignOwner()
 

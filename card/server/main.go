@@ -27,27 +27,27 @@ func (s *server) CreateCard(ctx context.Context, req *pb.CreateCardRequest) (*pb
 	if err != nil {
 		return nil, errors.New("unable to create new card")
 	}
-	return &pb.Card{Id: card.Id().String(), OwnerId: card.OwnerId().String()}, nil
+	return &pb.Card{Id: card.ID().String(), OwnerId: card.OwnerID().String()}, nil
 }
 
 func (s *server) AssignOwner(ctx context.Context, req *pb.AssignOwnerRequest) (*pb.Card, error) {
 	log.Println("[server]", "assigning owner to card...")
-	cardId, err := uuid.Parse(req.CardId)
+	cardID, err := uuid.Parse(req.GetCardId())
 	if err != nil {
-		return nil, errors.New("unable to parse cardId")
+		return nil, errors.New("unable to parse cardID")
 	}
 
-	ownerId, err := uuid.Parse(req.OwnerId)
+	ownerID, err := uuid.Parse(req.GetOwnerId())
 	if err != nil {
-		return nil, errors.New("unable to parse ownerId")
+		return nil, errors.New("unable to parse ownerID")
 	}
 
-	card, err := s.assignOwner.Execute(cardId, ownerId)
+	card, err := s.assignOwner.Execute(cardID, ownerID)
 	if err != nil {
 		return nil, errors.New("failed to add card to user")
 	}
 
-	return &pb.Card{Id: card.Id().String(), OwnerId: card.OwnerId().String()}, nil
+	return &pb.Card{Id: card.ID().String(), OwnerId: card.OwnerID().String()}, nil
 }
 
 const port = ":8081"

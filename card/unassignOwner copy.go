@@ -7,16 +7,16 @@ import (
 )
 
 type UnassignOwner interface {
-	Execute(cardId uuid.UUID) (Card, error)
+	Execute(cardID uuid.UUID) (Card, error)
 }
 
 type UnassignOwnerUseCase struct {
 	Repository Repository
 }
 
-func (uc UnassignOwnerUseCase) Execute(cardId uuid.UUID) (Card, error) {
+func (uc UnassignOwnerUseCase) Execute(cardID uuid.UUID) (Card, error) {
 	log.Println("[unassign owner use-case]", "unassigning owner from card...")
-	card, err := uc.Repository.GetCard(cardId)
+	card, err := uc.Repository.GetCard(cardID)
 	if err != nil {
 		return nil, err // todo: do not return naked errors!
 	}

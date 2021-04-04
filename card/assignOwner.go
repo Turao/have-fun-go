@@ -14,14 +14,14 @@ type AssignOwnerUseCase struct {
 	Repository Repository
 }
 
-func (uc AssignOwnerUseCase) Execute(cardId uuid.UUID, ownerId uuid.UUID) (Card, error) {
+func (uc AssignOwnerUseCase) Execute(cardID uuid.UUID, ownerID uuid.UUID) (Card, error) {
 	log.Println("[assign owner use-case]", "assigning owner to card...")
-	card, err := uc.Repository.GetCard(cardId)
+	card, err := uc.Repository.GetCard(cardID)
 	if err != nil {
 		return nil, err // todo: do not return naked errors!
 	}
 
-	err = card.AssignOwner(ownerId)
+	err = card.AssignOwner(ownerID)
 	if err != nil {
 		return nil, err // todo: do not return naked errors!
 	}

@@ -24,12 +24,12 @@ func NewInMemoryRepository() *InMemoryRepository {
 	return &InMemoryRepository{mutex: sync.Mutex{}, cards: make(map[uuid.UUID]Card)}
 }
 
-func (r *InMemoryRepository) GetCard(cardId uuid.UUID) (Card, error) {
+func (r *InMemoryRepository) GetCard(cardID uuid.UUID) (Card, error) {
 	log.Println("[in-memory repository]", "getting card...")
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
-	card, found := r.cards[cardId]
+	card, found := r.cards[cardID]
 	if !found {
 		return nil, errors.New("card does not exist")
 	}
@@ -55,11 +55,11 @@ func (r *InMemoryRepository) CreateCard(card Card) (Card, error) {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
-	_, found := r.cards[card.Id()]
+	_, found := r.cards[card.ID()]
 	if found {
 		return nil, errors.New("card has already been stored")
 	}
-	r.cards[card.Id()] = card
+	r.cards[card.ID()] = card
 	return card, nil
 }
 
@@ -68,10 +68,10 @@ func (r *InMemoryRepository) UpdateCard(card Card) (Card, error) {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
-	_, found := r.cards[card.Id()]
+	_, found := r.cards[card.ID()]
 	if !found {
 		return nil, errors.New("card does not exist")
 	}
-	r.cards[card.Id()] = card
+	r.cards[card.ID()] = card
 	return card, nil
 }

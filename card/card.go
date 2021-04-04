@@ -8,25 +8,25 @@ import (
 )
 
 type Card interface {
-	Id() uuid.UUID
+	ID() uuid.UUID
 	HasOwner() bool
-	OwnerId() uuid.UUID
-	AssignOwner(ownerId uuid.UUID) error
+	OwnerID() uuid.UUID
+	AssignOwner(ownerID uuid.UUID) error
 	UnassignOwner() error
 }
 
 type card struct {
 	id      uuid.UUID
-	ownerId uuid.UUID
+	ownerID uuid.UUID
 }
 
 func (card card) MarshalJSON() ([]byte, error) {
 	return json.Marshal(struct {
 		Id      uuid.UUID `json:"id"`
-		OwnerId uuid.UUID `json:"ownerId"`
+		OwnerID uuid.UUID `json:"ownerID"`
 	}{
 		card.id,
-		card.ownerId,
+		card.ownerID,
 	})
 }
 
@@ -34,24 +34,24 @@ func New() *card {
 	return &card{uuid.New(), uuid.Nil}
 }
 
-func (c card) Id() uuid.UUID {
+func (c card) ID() uuid.UUID {
 	return c.id
 }
 
-func (c card) OwnerId() uuid.UUID {
-	return c.ownerId
+func (c card) OwnerID() uuid.UUID {
+	return c.ownerID
 }
 
 func (c card) HasOwner() bool {
-	return c.ownerId != uuid.Nil
+	return c.ownerID != uuid.Nil
 }
 
-func (c *card) AssignOwner(ownerId uuid.UUID) error {
+func (c *card) AssignOwner(ownerID uuid.UUID) error {
 	if c.HasOwner() {
 		return errors.New("card already has an owner")
 	}
 
-	c.ownerId = ownerId
+	c.ownerID = ownerID
 	return nil
 }
 
@@ -60,6 +60,6 @@ func (c *card) UnassignOwner() error {
 		return errors.New("card has no owner")
 	}
 
-	c.ownerId = uuid.Nil
+	c.ownerID = uuid.Nil
 	return nil
 }
