@@ -3,14 +3,14 @@ package user
 import "log"
 
 type CreateUser interface {
-	Execute(name string) (*user, error)
+	Execute(name string) (User, error)
 }
 
 type CreateUserUseCase struct {
 	Repository Repository
 }
 
-func (uc CreateUserUseCase) Execute(name string) (*user, error) {
+func (uc CreateUserUseCase) Execute(name string) (User, error) {
 	log.Println("[createUser]", "Creating User...")
 	user := New(name)
 

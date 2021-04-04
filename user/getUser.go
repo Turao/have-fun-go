@@ -7,14 +7,14 @@ import (
 )
 
 type GetUser interface {
-	Execute(userId uuid.UUID) (*user, error)
+	Execute(userId uuid.UUID) (User, error)
 }
 
 type GetUserUseCase struct {
 	Repository Repository
 }
 
-func (uc GetUserUseCase) Execute(userId uuid.UUID) (*user, error) {
+func (uc GetUserUseCase) Execute(userId uuid.UUID) (User, error) {
 	log.Println("[getUser]", "Getting User...")
 
 	found, err := uc.Repository.GetUser(userId)

@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func givenUserExists(t *testing.T, repo Repository) *user {
+func givenUserExists(t *testing.T, repo Repository) User {
 	user, err := repo.CreateUser(New("dummy"))
 	if err != nil {
 		t.Fatal("failed on helper function")
@@ -23,11 +23,11 @@ func TestAddCardUseCase(t *testing.T) {
 
 	cardId := uuid.New()
 
-	user, err := usecase.Execute(user.id, cardId)
+	user, err := usecase.Execute(user.Id(), cardId)
 
 	assert.Nil(t, err)
 	assert.NotNil(t, user)
-	assert.Contains(t, user.cards, cardId)
+	assert.Contains(t, user.Cards(), cardId)
 
 	// todo: assert on repo calls
 }

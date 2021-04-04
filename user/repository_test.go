@@ -67,12 +67,12 @@ func TestUpdateUser(t *testing.T) {
 	repo := NewInMemoryRepository()
 
 	user, _ := repo.CreateUser(New("dummy-0"))
-	user.name = "dummy-1"
+	// user.Name = "dummy-1"
 	updated, err := repo.UpdateUser(user)
 
 	assert.Nil(t, err)
 	assert.NotNil(t, updated)
-	assert.Equal(t, "dummy-1", updated.name)
+	assert.Equal(t, "dummy-1", updated.Name())
 }
 
 func TestUpdateUserDoesNotExist(t *testing.T) {

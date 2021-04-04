@@ -13,7 +13,7 @@ func TestCreateUserUseCase(t *testing.T) {
 	user, err := usecase.Execute("dummy")
 	assert.Nil(t, err)
 	assert.NotNil(t, user)
-	assert.Equal(t, "dummy", user.name)
+	assert.Equal(t, "dummy", user.Name())
 
 	// todo: assert on repo calls
 }

@@ -3,14 +3,14 @@ package user
 import "log"
 
 type ListUsers interface {
-	Execute() ([]*user, error)
+	Execute() ([]User, error)
 }
 
 type ListUsersUseCase struct {
 	Repository Repository
 }
 
-func (uc ListUsersUseCase) Execute() ([]*user, error) {
+func (uc ListUsersUseCase) Execute() ([]User, error) {
 	log.Println("[listUser]", "Listing User...")
 
 	users, err := uc.Repository.GetUsers()

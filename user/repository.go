@@ -9,22 +9,22 @@ import (
 )
 
 type Repository interface {
-	GetUser(uuid.UUID) (*user, error)
-	GetUsers() ([]*user, error)
-	CreateUser(user *user) (*user, error)
-	UpdateUser(user *user) (*user, error)
+	GetUser(uuid.UUID) (User, error)
+	GetUsers() ([]User, error)
+	CreateUser(user User) (User, error)
+	UpdateUser(user User) (User, error)
 }
 
 type InMemoryRepository struct {
 	mutex sync.Mutex
-	users map[uuid.UUID]*user
+	users map[uuid.UUID]User
 }
 
 func NewInMemoryRepository() *InMemoryRepository {
-	return &InMemoryRepository{mutex: sync.Mutex{}, users: make(map[uuid.UUID]*user)}
+	return &InMemoryRepository{mutex: sync.Mutex{}, users: make(map[uuid.UUID]User)}
 }
 
-func (r *InMemoryRepository) GetUser(userId uuid.UUID) (*user, error) {
+func (r *InMemoryRepository) GetUser(userId uuid.UUID) (User, error) {
 	log.Println("[in-memory repository]", "Getting User...")
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
@@ -36,12 +36,12 @@ func (r *InMemoryRepository) GetUser(userId uuid.UUID) (*user, error) {
 	return user, nil
 }
 
-func (r *InMemoryRepository) GetUsers() ([]*user, error) {
+func (r *InMemoryRepository) GetUsers() ([]User, error) {
 	log.Println("[in-memory repository]", "Getting Users...")
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
-	users := make([]*user, 0, len(r.users))
+	users := make([]User, 0, len(r.users))
 
 	for _, u := range r.users {
 		users = append(users, u)
@@ -50,28 +50,28 @@ func (r *InMemoryRepository) GetUsers() ([]*user, error) {
 	return users, nil
 }
 
-func (r *InMemoryRepository) CreateUser(user *user) (*user, error) {
+func (r *InMemoryRepository) CreateUser(user User) (User, error) {
 	log.Println("[in-memory repository]", "Creating user...")
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
-	_, found := r.users[user.id]
+	_, found := r.users[user.Id()]
 	if found {
 		return nil, errors.New("user has already been stored")
 	}
-	r.users[user.id] = user
+	r.users[user.Id()] = user
 	return user, nil
 }
 
-func (r *InMemoryRepository) UpdateUser(user *user) (*user, error) {
+func (r *InMemoryRepository) UpdateUser(user User) (User, error) {
 	log.Println("[in-memory repository]", "Updating user...")
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
-	_, found := r.users[user.id]
+	_, found := r.users[user.Id()]
 	if !found {
 		return nil, errors.New("user does not exist")
 	}
-	r.users[user.id] = user
+	r.users[user.Id()] = user
 	return user, nil
 }
