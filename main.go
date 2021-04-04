@@ -9,7 +9,8 @@ import (
 
 	"google.golang.org/grpc"
 
-	pb "github.com/turao/go-cards/user/grpc"
+	cardGRPC "github.com/turao/go-cards/card/grpc"
+	userGRPC "github.com/turao/go-cards/user/grpc"
 )
 
 func PrettyPrintln(data json.Marshaler) {
@@ -21,31 +22,31 @@ func PrettyPrintln(data json.Marshaler) {
 }
 
 func main() {
-	conn, err := grpc.Dial("127.0.0.1:8080", grpc.WithInsecure(), grpc.WithBlock())
+	connUser, err := grpc.Dial("127.0.0.1:8080", grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
 		log.Fatalln("Unable to connect (grpc): ", err.Error())
 	}
-	defer conn.Close()
+	defer connUser.Close()
 
-	client := pb.NewUsersClient(conn)
+	userClient := userGRPC.NewUsersClient(connUser)
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	u, err := client.CreateUser(ctx, &pb.CreateUserRequest{})
+	user, err := userClient.CreateUser(ctx, &userGRPC.CreateUserRequest{})
 	if err != nil {
 		log.Println("[main]", "Unable to create user: ", err.Error())
 	}
 	log.Println("[main]", "Created User...")
-	log.Println("[main]", u)
+	log.Println("[main]", user)
 
-	u, err = client.GetUser(ctx, &pb.GetUserRequest{UserId: u.Id})
+	user, err = userClient.GetUser(ctx, &userGRPC.GetUserRequest{UserId: user.Id})
 	if err != nil {
 		log.Println("[main]", "Unable to get user: ", err.Error())
 	}
-	log.Println("[main]", "Got User...", u)
+	log.Println("[main]", "Got User...", user)
 
-	users, err := client.ListUsers(ctx, &pb.ListUsersRequest{})
+	users, err := userClient.ListUsers(ctx, &userGRPC.ListUsersRequest{})
 	if err != nil {
 		log.Println("[main]", "Unable to list users: ", err.Error())
 	}
@@ -63,15 +64,34 @@ func main() {
 		log.Println("[main]", "Got User...", u)
 	}
 
-	cardId := "00000000-0000-0000-0000-000000000000"
-	_, err = client.AddCard(ctx, &pb.AddCardRequest{UserId: u.Id, CardId: cardId})
+	// Create a new card
+	connCard, err := grpc.Dial("127.0.0.1:8081", grpc.WithInsecure(), grpc.WithBlock())
+	if err != nil {
+		log.Fatalln("Unable to connect (grpc): ", err.Error())
+	}
+	defer connCard.Close()
+
+	cardClient := cardGRPC.NewCardsClient(connCard)
+	card, err := cardClient.CreateCard(ctx, &cardGRPC.CreateCardRequest{})
+	if err != nil {
+		log.Println("[main]", "unable to create card", err.Error())
+	}
+
+	// Add this card to the user
+	_, err = userClient.AddCard(ctx, &userGRPC.AddCardRequest{UserId: user.Id, CardId: card.Id})
 	if err != nil {
 		log.Println("[main]", "unable to add card to user (first time)", err.Error())
 	}
 
-	_, err = client.AddCard(ctx, &pb.AddCardRequest{UserId: u.Id, CardId: cardId})
+	_, err = userClient.AddCard(ctx, &userGRPC.AddCardRequest{UserId: user.Id, CardId: card.Id})
 	if err != nil {
 		log.Println("[main]", "unable to add card to user (second time)", err.Error())
 	}
 
+	// assign user as owner of this card
+	card, err = cardClient.AssignOwner(ctx, &cardGRPC.AssignOwnerRequest{CardId: card.Id, OwnerId: user.Id})
+	if err != nil {
+		log.Println("[main]", "unable to assign owner to card", err.Error())
+	}
+	log.Println("[main]", "owner assigned to card", card)
 }
