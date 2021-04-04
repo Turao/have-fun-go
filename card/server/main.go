@@ -21,7 +21,7 @@ type server struct {
 }
 
 func (s *server) CreateCard(ctx context.Context, req *pb.CreateCardRequest) (*pb.Card, error) {
-	log.Println("[server]", "Creating user...")
+	log.Println("[server]", "Creating card...")
 
 	card, err := s.createCard.Execute()
 	if err != nil {
@@ -50,7 +50,7 @@ func (s *server) AssignOwner(ctx context.Context, req *pb.AssignOwnerRequest) (*
 	return &pb.Card{Id: card.Id().String(), OwnerId: card.OwnerId().String()}, nil
 }
 
-const port = ":8080"
+const port = ":8081"
 
 func main() {
 	lis, err := net.Listen("tcp", port)
