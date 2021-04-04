@@ -55,11 +55,11 @@ func (r *InMemoryRepository) CreateUser(user User) (User, error) {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
-	_, found := r.users[user.Id()]
+	_, found := r.users[user.ID()]
 	if found {
 		return nil, errors.New("user has already been stored")
 	}
-	r.users[user.Id()] = user
+	r.users[user.ID()] = user
 	return user, nil
 }
 
@@ -68,10 +68,10 @@ func (r *InMemoryRepository) UpdateUser(user User) (User, error) {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
-	_, found := r.users[user.Id()]
+	_, found := r.users[user.ID()]
 	if !found {
 		return nil, errors.New("user does not exist")
 	}
-	r.users[user.Id()] = user
+	r.users[user.ID()] = user
 	return user, nil
 }

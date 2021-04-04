@@ -8,11 +8,11 @@ import (
 )
 
 type User interface {
-	Id() uuid.UUID
+	ID() uuid.UUID
 	Name() string
 	Cards() map[uuid.UUID]bool
-	AddCard(cardId uuid.UUID) error
-	RemoveCard(cardId uuid.UUID) error
+	AddCard(cardID uuid.UUID) error
+	RemoveCard(cardID uuid.UUID) error
 }
 
 type user struct {
@@ -42,7 +42,7 @@ func New(name string) *user {
 	return &user{uuid.New(), name, make(map[uuid.UUID]bool)}
 }
 
-func (u user) Id() uuid.UUID {
+func (u user) ID() uuid.UUID {
 	return u.id
 }
 
@@ -54,22 +54,22 @@ func (u user) Cards() map[uuid.UUID]bool {
 	return u.cards
 }
 
-func (u *user) AddCard(cardId uuid.UUID) error {
-	found := u.cards[cardId]
+func (u *user) AddCard(cardID uuid.UUID) error {
+	found := u.cards[cardID]
 	if found {
 		return errors.New("user already has this card")
 	}
 
-	u.cards[cardId] = true
+	u.cards[cardID] = true
 	return nil
 }
 
-func (u *user) RemoveCard(cardId uuid.UUID) error {
-	found := u.cards[cardId]
+func (u *user) RemoveCard(cardID uuid.UUID) error {
+	found := u.cards[cardID]
 	if !found {
 		return errors.New("user does not have this card")
 	}
 
-	delete(u.cards, cardId)
+	delete(u.cards, cardID)
 	return nil
 }

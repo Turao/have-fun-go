@@ -13,13 +13,13 @@ func TestAddCardUseCase(t *testing.T) {
 
 	usecase := AddCardUseCase{Repository: repository}
 
-	cardId := uuid.New()
+	cardID := uuid.New()
 
-	user, err := usecase.Execute(user.Id(), cardId)
+	user, err := usecase.Execute(user.ID(), cardID)
 
 	assert.Nil(t, err)
 	assert.NotNil(t, user)
-	assert.Contains(t, user.Cards(), cardId)
+	assert.Contains(t, user.Cards(), cardID)
 
 	// todo: assert on repo calls
 }

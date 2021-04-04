@@ -13,8 +13,8 @@ import (
 // 	repository := NewInMemoryRepository() // todo: mock this repository (how?)
 // 	usecase := GetUserUseCase{Repository: repository}
 
-// 	userId := uuid.New()
-// 	user, err := usecase.Execute(userId)
+// 	userID := uuid.New()
+// 	user, err := usecase.Execute(userID)
 // 	assert.Nil(t, err)
 // 	assert.NotNil(t, user)
 // 	// assert.Equal(t, "dummy", user.name)
@@ -26,8 +26,8 @@ func TestGetUserUseCaseNotExists(t *testing.T) {
 	repository := NewInMemoryRepository() // todo: mock this repository (how?)
 	usecase := GetUserUseCase{Repository: repository}
 
-	userId := uuid.New()
-	user, err := usecase.Execute(userId)
+	userID := uuid.New()
+	user, err := usecase.Execute(userID)
 	assert.NotNil(t, err)
 	assert.Nil(t, user)
 

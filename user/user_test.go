@@ -9,30 +9,30 @@ import (
 
 func TestAddCard(t *testing.T) {
 	user := New("dummy")
-	cardId := uuid.New()
+	cardID := uuid.New()
 
-	err := user.AddCard(cardId)
+	err := user.AddCard(cardID)
 
 	assert.Nil(t, err)
-	assert.Contains(t, user.cards, cardId)
+	assert.Contains(t, user.cards, cardID)
 }
 
 func TestAddCardMoreThanOnce(t *testing.T) {
 	user := New("dummy")
-	cardId := uuid.New()
-	user.AddCard(cardId)
+	cardID := uuid.New()
+	user.AddCard(cardID)
 
-	err := user.AddCard(cardId)
+	err := user.AddCard(cardID)
 
 	assert.NotNil(t, err)
 }
 
 func TestRemoveCard(t *testing.T) {
 	user := New("dummy")
-	cardId := uuid.New()
-	user.AddCard(cardId)
+	cardID := uuid.New()
+	user.AddCard(cardID)
 
-	err := user.RemoveCard(cardId)
+	err := user.RemoveCard(cardID)
 
 	assert.Nil(t, err)
 	assert.Empty(t, user.cards)
@@ -40,11 +40,11 @@ func TestRemoveCard(t *testing.T) {
 
 func TestRemoveCardMoreThanOnce(t *testing.T) {
 	user := New("dummy")
-	cardId := uuid.New()
-	user.AddCard(cardId)
-	user.RemoveCard(cardId)
+	cardID := uuid.New()
+	user.AddCard(cardID)
+	user.RemoveCard(cardID)
 
-	err := user.RemoveCard(cardId)
+	err := user.RemoveCard(cardID)
 
 	assert.NotNil(t, err)
 }

@@ -7,22 +7,22 @@ import (
 )
 
 type AddCard interface {
-	Execute(userId uuid.UUID, cardId uuid.UUID) (User, error)
+	Execute(userID uuid.UUID, cardID uuid.UUID) (User, error)
 }
 
 type AddCardUseCase struct {
 	Repository Repository
 }
 
-func (uc AddCardUseCase) Execute(userId uuid.UUID, cardId uuid.UUID) (User, error) {
-	log.Println("[add card use-case]", "adding card to user...", cardId, userId)
+func (uc AddCardUseCase) Execute(userID uuid.UUID, cardID uuid.UUID) (User, error) {
+	log.Println("[add card use-case]", "adding card to user...", cardID, userID)
 
-	user, err := uc.Repository.GetUser(userId)
+	user, err := uc.Repository.GetUser(userID)
 	if err != nil {
 		return nil, err // todo: do not return naked errors!
 	}
 
-	err = user.AddCard(cardId)
+	err = user.AddCard(cardID)
 	if err != nil {
 		return nil, err // todo: do not return naked errors!
 	}
