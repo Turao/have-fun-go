@@ -15,7 +15,7 @@ type GetUserUseCase struct {
 }
 
 func (uc GetUserUseCase) Execute(userId uuid.UUID) (User, error) {
-	log.Println("[getUser]", "Getting User...")
+	log.Println("[get user use-case]", "getting user...")
 
 	found, err := uc.Repository.GetUser(userId)
 	if err != nil {

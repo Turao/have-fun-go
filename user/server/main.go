@@ -22,7 +22,7 @@ type server struct {
 }
 
 func (s *server) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.User, error) {
-	log.Println("[server]", "Getting user...")
+	log.Println("[server]", "getting user...")
 
 	uuid, err := uuid.Parse(req.GetUserId())
 	if err != nil {
@@ -54,7 +54,7 @@ func (s *server) ListUsers(req *pb.ListUsersRequest, stream pb.Users_ListUsersSe
 }
 
 func (s *server) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.User, error) {
-	log.Println("[server]", "Creating user...")
+	log.Println("[server]", "creating user...")
 
 	user, err := s.createUser.Execute(req.GetName())
 	if err != nil {
@@ -64,7 +64,7 @@ func (s *server) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb
 }
 
 func (s *server) AddCard(ctx context.Context, req *pb.AddCardRequest) (*pb.User, error) {
-	log.Println("[server]", "Adding card...")
+	log.Println("[server]", "adding card...")
 	userId, err := uuid.Parse(req.UserId)
 	if err != nil {
 		return nil, errors.New("unable to parse userId")
@@ -88,7 +88,7 @@ const port = ":8080"
 func main() {
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
-		log.Fatalln("Failed to listen")
+		log.Fatalln("failed to listen")
 	}
 	s := grpc.NewServer()
 
@@ -102,6 +102,6 @@ func main() {
 	})
 
 	if err := s.Serve(lis); err != nil {
-		log.Fatalln("Failed to serve")
+		log.Fatalln("failed to serve")
 	}
 }

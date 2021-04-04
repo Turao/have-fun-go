@@ -15,7 +15,7 @@ type AddCardUseCase struct {
 }
 
 func (uc AddCardUseCase) Execute(userId uuid.UUID, cardId uuid.UUID) (User, error) {
-	log.Println("[addCard]", "Adding card to user...", cardId, userId)
+	log.Println("[add card use-case]", "adding card to user...", cardId, userId)
 
 	user, err := uc.Repository.GetUser(userId)
 	if err != nil {
@@ -32,6 +32,6 @@ func (uc AddCardUseCase) Execute(userId uuid.UUID, cardId uuid.UUID) (User, erro
 		return nil, err // todo: do not return naked errors!
 	}
 
-	log.Println("[addCard]", "Card added!")
+	log.Println("[add card use-case]", "card added")
 	return user, nil
 }

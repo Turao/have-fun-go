@@ -11,7 +11,7 @@ type CreateUserUseCase struct {
 }
 
 func (uc CreateUserUseCase) Execute(name string) (User, error) {
-	log.Println("[createUser]", "Creating User...")
+	log.Println("[create user use-case]", "creating user...")
 	user := New(name)
 
 	created, err := uc.Repository.CreateUser(user)

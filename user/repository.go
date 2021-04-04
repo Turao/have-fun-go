@@ -25,7 +25,7 @@ func NewInMemoryRepository() *InMemoryRepository {
 }
 
 func (r *InMemoryRepository) GetUser(userId uuid.UUID) (User, error) {
-	log.Println("[in-memory repository]", "Getting User...")
+	log.Println("[in-memory repository]", "getting User...")
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
@@ -37,7 +37,7 @@ func (r *InMemoryRepository) GetUser(userId uuid.UUID) (User, error) {
 }
 
 func (r *InMemoryRepository) GetUsers() ([]User, error) {
-	log.Println("[in-memory repository]", "Getting Users...")
+	log.Println("[in-memory repository]", "getting users...")
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
@@ -51,7 +51,7 @@ func (r *InMemoryRepository) GetUsers() ([]User, error) {
 }
 
 func (r *InMemoryRepository) CreateUser(user User) (User, error) {
-	log.Println("[in-memory repository]", "Creating user...")
+	log.Println("[in-memory repository]", "creating user...")
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
@@ -64,7 +64,7 @@ func (r *InMemoryRepository) CreateUser(user User) (User, error) {
 }
 
 func (r *InMemoryRepository) UpdateUser(user User) (User, error) {
-	log.Println("[in-memory repository]", "Updating user...")
+	log.Println("[in-memory repository]", "updating user...")
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 

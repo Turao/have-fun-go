@@ -11,7 +11,7 @@ type ListUsersUseCase struct {
 }
 
 func (uc ListUsersUseCase) Execute() ([]User, error) {
-	log.Println("[listUser]", "Listing User...")
+	log.Println("[list user use-case]", "listing users...")
 
 	users, err := uc.Repository.GetUsers()
 	if err != nil {
