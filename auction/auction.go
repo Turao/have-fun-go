@@ -9,7 +9,7 @@ import (
 )
 
 type Auction interface {
-	Id()
+	ID()
 	StartTime() time.Time
 	EndTime() time.Time
 	Start() (Auction, error)
@@ -42,7 +42,7 @@ func New() *auction {
 	return &auction{uuid.New(), nil, nil, make([]bid, 0)}
 }
 
-func (auction auction) Id() uuid.UUID {
+func (auction auction) ID() uuid.UUID {
 	return auction.id
 }
 
@@ -70,7 +70,7 @@ func (auction *auction) End() (*auction, error) {
 	return auction, nil
 }
 
-func (auction *auction) PlaceBid(bidderId uuid.UUID, itemId uuid.UUID, price uint) (*auction, error) {
+func (auction *auction) PlaceBid(bidderID uuid.UUID, itemID uuid.UUID, price uint) (*auction, error) {
 	if auction.startTime == nil {
 		return auction, errors.New("auction has not started yet")
 	}
@@ -79,7 +79,7 @@ func (auction *auction) PlaceBid(bidderId uuid.UUID, itemId uuid.UUID, price uin
 		return auction, errors.New("auction has already ended")
 	}
 
-	newBid := newBid(bidderId, itemId, price)
+	newBid := newBid(bidderID, itemID, price)
 	auction.bids = append(auction.bids, *newBid)
 	return auction, nil
 }

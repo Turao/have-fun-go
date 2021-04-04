@@ -8,7 +8,7 @@ import (
 )
 
 type Bid interface {
-	Id() uuid.UUID
+	ID() uuid.UUID
 	BidderId() uuid.UUID
 	ItemId() uuid.UUID
 	Price() uint
