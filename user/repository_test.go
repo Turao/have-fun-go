@@ -73,6 +73,7 @@ func TestUpdateUser(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotNil(t, updated)
 	assert.Equal(t, "dummy-1", updated.Name())
+	// todo: can this be tested without handling the concrete implementation directly?
 }
 
 func TestUpdateUserDoesNotExist(t *testing.T) {

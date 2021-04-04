@@ -7,14 +7,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func givenUserExists(t *testing.T, repo Repository) User {
-	user, err := repo.CreateUser(New("dummy"))
-	if err != nil {
-		t.Fatal("failed on helper function")
-	}
-	return user
-}
-
 func TestAddCardUseCase(t *testing.T) {
 	repository := NewInMemoryRepository() // todo: mock this repository (how?)
 	user := givenUserExists(t, repository)
